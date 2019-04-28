@@ -1,3 +1,16 @@
+'''
+note:
+visdom三部曲：导入-创建env-画图
+    import visdom
+    vis = visdom.Visdom(env='MNIST')
+    vis.line(X=np.array([i]),Y=np.array([sum_loss]),win='loss',update='append',name='lr-0.001',opts=dict(linecolor=np.array([[218,165,32]]),showlegend=True))
+常用的是line工具，需要注意的地方：
+1.颜色设置：array格式，shape[0]为1（为了兼容多种颜色输入），如果只是单线颜色设置可以为：np.array([[218,165,32]]
+2.name设置了就不用在legend在命名了，不然不会更新
+3.如果想要多次运行在一张图上更新线，需要更改的opt：颜色，name，直接运行即可如果是开多个类型的曲线，可以更改win多开窗口
+
+'''
+
 import torch
 import torch.nn as nn
 import torch.optim as optim
