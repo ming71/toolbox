@@ -30,3 +30,5 @@ User-friendly work for extract imformation from xml files.And a example is attac
 Helpful of partition of dataset.<br>
 * **img_format_trans**<br>
 A simple tool for conversion of image format.<br>
+* **visdom-train-example**<br>
+A example for training while monitoring on loss and ac curve.More details and attention have been attached to file inside<br>
