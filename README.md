@@ -31,4 +31,4 @@ Helpful of partition of dataset.<br>
 * **img_format_trans**<br>
 A simple tool for conversion of image format.<br>
 * **visdom-train-example**<br>
-A example for training while monitoring on loss and ac curve.More details and attention have been attached to file inside<br>
+A example for training while monitoring on loss and ac curve.More details and attention have been attached to file inside.<br>
