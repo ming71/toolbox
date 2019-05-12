@@ -276,5 +276,11 @@ class PascalVOC2coco(object):
 # xml_file=['./Annotations/000032.xml']
 
 # xml_file = glob.glob('/py/panda_data/1.xml')
-xml_file=['/py/panda_data/1.xml','/py/panda_data/2.xml','/py/panda_data/3.xml','/py/panda_data/4.xml','/py/panda_data/5.xml','/py/panda_data/6.xml','/py/panda_data/7.xml','/py/panda_data/8.xml','/py/panda_data/9.xml','/py/panda_data/10.xml']
+#xml_file=['/py/panda_data/1.xml','/py/panda_data/2.xml','/py/panda_data/3.xml','/py/panda_data/4.xml','/py/panda_data/5.xml','/py/panda_data/6.xml','/py/panda_data/7.xml','/py/panda_data/8.xml','/py/panda_data/9.xml','/py/panda_data/10.xml']
+
+# 直接读取目标文件夹下所有的xml进行转化
+path = r'/py/datasets/val_ships/voc-label/'
+
+files= os.listdir(path) #得到文件夹下的所有文件名称
+xml_files = [path+i for i in files]
 PascalVOC2coco(xml_file, 'train.json')
