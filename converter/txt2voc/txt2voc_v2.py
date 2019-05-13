@@ -10,7 +10,13 @@ creat time:2018.12.14
     扫描每个文件时，cnt变量初始化0
     每个文件在扫描name得到目标类时，cnt+=1，文件最后判断cnt若为0，说明只有非目标类，打印path即可
 '''
-
+from lxml.etree import Element,SubElement,tostring
+from xml.dom.minidom import parseString
+import xml.dom.minidom
+import os
+import sys
+from PIL import Image
+import cv2 as cv
 
 #把txt中的内容写进xml
 def deal(txt_path,xml_path):
