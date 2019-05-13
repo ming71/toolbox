@@ -9,6 +9,12 @@ creat time:2018.12.14
 （2）判断是否为非目标图（只含非目标类）：
     扫描每个文件时，cnt变量初始化0
     每个文件在扫描name得到目标类时，cnt+=1，文件最后判断cnt若为0，说明只有非目标类，打印path即可
+    
+注意：
+修改自己的txt类型需要改动的地方：
+（1）文件路径
+（2）标号对应的class名字定义
+（3）xmin等参数的位置，上述23都在readtxt函数中
 '''
 from lxml.etree import Element,SubElement,tostring
 from xml.dom.minidom import parseString
