@@ -32,3 +32,5 @@ Helpful of partition of dataset.<br>
 A simple tool for conversion of image format.<br>
 * **visdom-train-example**<br>
 A example for training while monitoring on loss and ac curve.More details and attention have been attached to file inside.<br>
+* **python-cmd**<br>
+Linux command execution through python file,provided as a easy demo.<br>
