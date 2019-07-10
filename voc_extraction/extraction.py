@@ -3,6 +3,8 @@
 该程序将各种数据集的信息进行简单提取：xmin,xmax,ymin,ymax和class_id，并且写成修改后的NWPU的格式：
 class,(xmin,ymin),(xmax,ymax)
 
+#强烈推荐按照图、物体来分割xml，和按行搜索相比不容易出错错！！（见第二段代码）
+
 attention:批量操作需谨慎，没看明白勿操作！！！
 (1)重命名处千万小心！每个部分只跑一次！！
 (2)ipdb调试
@@ -72,7 +74,8 @@ for file in files:                                      #每个文件名称
     
 
 
-## -----------按照物体来分割xml，逻辑更直观不易出错（推荐）---------------------
+## -----------按照物体来分割xml，逻辑更直观不易出错（强烈推荐）---------------------
+# voc-xml按字符'<object>'分割，list第一项是图片信息，后面的是每个物体
 # with open(path,'r') as f:
 #         contents=f.read()
 #         objects=contents.split('\n')#分割出每个物体
