@@ -78,7 +78,7 @@ for file in files:                                      #每个文件名称
 # voc-xml按字符'<object>'分割，list第一项是图片信息，后面的是每个物体
 # with open(path,'r') as f:
 #         contents=f.read()
-#         objects=contents.split('\n')#分割出每个物体
+#         objects=contents.split('\n')#分割出每个物体  # ！！注意分割之后'<object>'就没了，后面write要补上
 #         for i in range(objects.count('')):#去掉空格项
 #            objects.remove('')
 #         num=len(objects)#物体的数量
