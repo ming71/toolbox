@@ -68,7 +68,20 @@ for file in files:                                      #每个文件名称
                  if('<box_ymax>') in line:
                     f.write(line[line.find('<box_ymax>')+10:line.find('</box_ymax>')]+')'+'\n')
   '''  
-  
+ 
+    
+
+
+## -----------按照物体来分割xml，逻辑更直观不易出错（推荐）---------------------
+# with open(path,'r') as f:
+#         contents=f.read()
+#         objects=contents.split('\n')#分割出每个物体
+#         for i in range(objects.count('')):#去掉空格项
+#            objects.remove('')
+#         num=len(objects)#物体的数量
+#         for objecto in objects:
+#             xmin=objecto.split(' ')[7]  #以','进行分割，得到的片段存入列表，[n]代表列表的第n个分片
+    
     
 ##原始xml获取类别
 #for file in files:
