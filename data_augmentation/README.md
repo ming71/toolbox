@@ -12,9 +12,9 @@ Customed code for label rewritting is all you need , thus you need to rewrite `r
 
 ## Result 
 * HSV
-<figure class="half">
-    <img src="https://github.com/ming71/toolbox/blob/master/data_augmentation/raw.jpeg" width="200"/>
-    <img src="https://github.com/ming71/toolbox/blob/master/data_augmentation/hsv.jpeg" width="200"/>
-</figure>
 
+<p float="left">
+  <img src="https://github.com/ming71/toolbox/blob/master/data_augmentation/raw.jpeg" width="100" />
+  <img src="https://github.com/ming71/toolbox/blob/master/data_augmentation/hsv.jpeg" width="100" /> 
+</p>
 
