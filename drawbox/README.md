@@ -17,8 +17,8 @@
 
 ## 结果展示
 用DOTA的图片crop和affine变换后读取变换的坐标绘图得到如下bbox结果：
-<div align=center><img width="500" height="400" src="https://github.com/ming71/toolbox/blob/master/drawbox/drawbox_screenshot_11.017.2019.png"/></div><br/>
+<div align=center><img width="600" height="480" src="https://github.com/ming71/toolbox/blob/master/drawbox/drawbox_screenshot_11.017.2019.png"/></div><br/>
 
-![](https://github.com/ming71/toolbox/blob/master/drawbox/drawbox_screenshot_11.07.019.png){:height="60%" width="60%"}
+<div align=center><img width="600" height="480" src="https://github.com/ming71/toolbox/blob/master/drawbox/drawbox_screenshot_11.07.2019.png"/></div><br/>
 
-![](https://github.com/ming71/toolbox/blob/master/drawbox/drawbox_screenshot_11.07.2019.png){:height="60%" width="60%"}
+<div align=center><img width="600" height="480" src="https://github.com/ming71/toolbox/blob/master/drawbox/drawbox_screenshot_11.07.019.png"/></div><br/>
