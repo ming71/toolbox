@@ -1,7 +1,7 @@
 # toolbox
 All kinds of utils for format convertion or something else (described in readme files)</br>
 Each python file matches some samples inside.</br>
-More details are marked in the python files as annotation.</br>
+More details are marked in the python files as **annotation** or **`README.md` file** inside the folder.</br>
 
 
 ## converter 
