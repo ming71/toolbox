@@ -13,7 +13,7 @@ Customed code for label rewritting is all you need , thus you need to rewrite `r
 ## Result 
 * HSV
 
-<p float="left">
+<p float="center">
   <img src="https://github.com/ming71/toolbox/blob/master/data_augmentation/raw.jpeg" width="100" />
   <img src="https://github.com/ming71/toolbox/blob/master/data_augmentation/hsv.jpeg" width="100" /> 
 </p>
