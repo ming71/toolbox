@@ -3,7 +3,7 @@ The code help to draw bbox on the original pixel matrix based on the input point
 Implemented in form of **polygon** by opencv-python.
 
 ## demo    
-Draw the boxes on image by directly entering a picture path and point column。    
+Draw the boxes on image by directly entering a picture path and point column.   
 
 ## DrawBox   
 * get_points    
