@@ -8,7 +8,7 @@ Draw the boxes on image by directly entering a picture path and point column.
 ## DrawBox   
 * get_points    
 Coordinate information of points is read from annotation files such as XML    
-**Customed part**；Obtain different information <u>according to the specific label</u>; **the output should be in the same format as the return to avoid subsequent drawbox changes**  
+**Customed part**: Obtain different information according to the specific label ; **the output should be in the same format as the return to avoid subsequent drawbox changes**  
 
 * drawbox (optional settings) 
 1. Input a single picture or folder
