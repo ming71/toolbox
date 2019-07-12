@@ -29,7 +29,7 @@ This tool helps you to convert json file created by labelme to COCO style for tr
 User-friendly work for extracting imformation from xml files. And an example is attached for better understanding.<br>
 
 ## data augmentation
-* **augmentation**
+* **augmentation**  
 Various kinds of data augmentation implementions as well as some demos are concluded inside .
 
 ## other tools
