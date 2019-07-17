@@ -32,6 +32,7 @@ def get_points(xml_path):
 
         object_coors=[]	# coor内一个元素是一个物体，含四个点8坐标
         for object in objects:
+		# ---------------- for DOTA ----------------------
             x0 = object[object.find('<x0>')+4 : object.find('</x0>')]
             y0 = object[object.find('<y0>')+4 : object.find('</y0>')]
             x1 = object[object.find('<x1>')+4 : object.find('</x1>')]
@@ -40,6 +41,15 @@ def get_points(xml_path):
             y2 = object[object.find('<y2>')+4 : object.find('</y2>')]
             x3 = object[object.find('<x3>')+4 : object.find('</x3>')]
             y3 = object[object.find('<y3>')+4 : object.find('</y3>')]
+		# ---------------- for VOC --------------------
+#             x0 = object[object.find('<xmin>')+6 : object.find('</xmin>')]
+#             y0 = object[object.find('<ymin>')+6 : object.find('</ymin>')]
+#             x1 = object[object.find('<xmin>')+6 : object.find('</xmin>')]
+#             y1 = object[object.find('<ymax>')+6 : object.find('</ymax>')]
+#             x2 = object[object.find('<xmax>')+6 : object.find('</xmax>')]
+#             y2 = object[object.find('<ymax>')+6 : object.find('</ymax>')]
+#             x3 = object[object.find('<xmax>')+6 : object.find('</xmax>')]
+#             y3 = object[object.find('<ymin>')+6 : object.find('</ymin>')]
             object_coors.append(np.array([[int(x0),int(y0)],[int(x1),int(y1)],[int(x2),int(y2)],[int(x3),int(y3)]]))
     return object_coors  
 
