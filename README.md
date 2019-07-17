@@ -37,12 +37,15 @@ Various kinds of data augmentation implementions as well as some demos are concl
 Useful tool for drawing bbox through providied points.The only customed part is your points obtaining function. 
 
 ## other tools
-* **data_partition**<br>
-Helpful of partition of dataset.<br>
-* **img_format_trans**<br>
-A simple tool for conversion of image format.<br>
-* **visdom-train-example**<br>
-A example for training while monitoring on loss and ac curve.More details and attention have been attached to file inside.<br>
-* **python-cmd**<br>
-Linux command execution through python file , provided as a easy but sufficient demo.<br>
- 
+* **data_partition**  
+Helpful of partition of dataset.
+* **img_format_trans**    
+A simple tool for conversion of image format.  
+* **visdom-train-example**  
+A example for training while monitoring on loss and ac curve.More details and attention have been attached to file inside.  
+* **python-cmd**  
+Linux command execution through python file , provided as a easy but sufficient demo.  
+* **shuffle**  
+**Randomly** generate small subdataset from the dataset. 
+* **match_check** 
+Verify if images and annotations do not correspond and output the associated file names.
