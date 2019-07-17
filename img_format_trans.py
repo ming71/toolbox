@@ -1,25 +1,28 @@
 '''
-replace the raw images with aimed format images
+replace the raw format with the aimed format imgs
 '''
 
 import os
 import cv2
-import sys
-import numpy as np
 from PIL import Image
  
-path = r'/media/xiaoming/ming/env/dataset/ship_dataset/hsrc'
- 
-for filename in os.listdir(path):
-    if os.path.splitext(filename)[1] == '.jpg':
-        img = Image.open(path+"/"+filename)
-        img.save(path + '/' +  filename)
-'''     
-def bmpToJpg(file_path):
-    for fileName in os.listdir(file_path):
-        # print(fileName)
-        newFileName = fileName[0:fileName.find("_")]+".jpg"
-        print(newFileName)
-        im = Image.open(file_path+"\\"+fileName)
-        im.save(file_path+"\\"+newFileName)
-'''
+# 将目标文件夹下所有 指定后缀的文件 全部另存为目标格式
+def format_trans(src_suffix,dst_suffix,path,save_path):
+	for i,filename in enumerate(os.listdir(path)):
+		# print(filename)
+		if os.path.splitext(filename)[1] == src_suffix:
+			img = Image.open(path+"/"+filename)
+			img = img.convert('RGB')  # 丢弃透明度通道避免转换出错
+			img.save(save_path + '/' +  filename.strip(src_suffix) + dst_suffix)
+		print('\r Converting  {:.2f}%'.format(100*i/len(os.listdir(path))),end='')
+
+
+
+
+if __name__ == '__main__':
+	path = r'/py/R2CNN-tensorflow/data/VOCdevkit/VOC2007/JPEGImages-png'
+	save_path = r'/py/R2CNN-tensorflow/data/VOCdevkit/VOC2007/JPEGImages'
+	src_suffix = '.png'
+	dst_suffix = '.jpg'
+
+	format_trans(src_suffix,dst_suffix,path,save_path)
