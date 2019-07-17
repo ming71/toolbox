@@ -47,5 +47,5 @@ A example for training while monitoring on loss and ac curve.More details and at
 Linux command execution through python file , provided as a easy but sufficient demo.  
 * **shuffle**  
 **Randomly** generate small subdataset from the dataset. 
-* **match_check** 
+* **match_check**   
 Verify if images and annotations do not correspond and output the associated file names.
