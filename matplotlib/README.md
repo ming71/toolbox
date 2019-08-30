@@ -4,15 +4,15 @@ The code is used for calculating Hu-Moment and conducting on some experiments.Be
 
 ## Result
 Display some result and you can copy the corresponding code to the desired type as follow: 
-<div align=center><img width="500" height="380" src="https://github.com/ming71/toolbox/blob/master/matplotlib/4vars.png"/></div><br/>
+<div align=center><img width="600" height="480" src="https://github.com/ming71/toolbox/blob/master/matplotlib/4vars.png"/></div><br/>
 
-<div align=center><img width="500" height="380" src="https://github.com/ming71/toolbox/blob/master/matplotlib/crop_3D_8.png"/></div><br/>
+<div align=center><img width="600" height="480" src="https://github.com/ming71/toolbox/blob/master/matplotlib/crop_3D_8.png"/></div><br/>
 
-<div align=center><img width="500" height="380" src="https://github.com/ming71/toolbox/blob/master/matplotlib/Hu-hist.png"/></div><br/>
+<div align=center><img width="600" height="480" src="https://github.com/ming71/toolbox/blob/master/matplotlib/Hu-hist.png"/></div><br/>
 
-<div align=center><img width="500" height="380" src="https://github.com/ming71/toolbox/blob/master/matplotlib/s&r_no_canny.png"/></div><br/>
+<div align=center><img width="600" height="480" src="https://github.com/ming71/toolbox/blob/master/matplotlib/s&r_no_canny.png"/></div><br/>
 
 
 ## Reference
 property:
-<div align=center><img width="500" height="380" src="https://github.com/ming71/toolbox/blob/master/matplotlib/HuMonent.py"/></div><br/>
+<div align=center><img  src="https://github.com/ming71/toolbox/blob/master/matplotlib/matplotlib-cheatsheet.png"/></div><br/>
