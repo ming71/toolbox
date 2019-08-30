@@ -36,16 +36,29 @@ Various kinds of data augmentation implementions as well as some demos are concl
 * **drawbox**  
 Useful tool for drawing bbox through providied points.The only customed part is your points obtaining function. 
 
+## matplotlib
+Provided a template for plotting 2D and 3D figure.
+
 ## other tools
 * **data_partition**  
 Helpful of partition of dataset.
+
 * **img_format_trans**    
 A simple tool for conversion of image format.  
+
 * **visdom-train-example**  
-A example for training while monitoring on loss and ac curve.More details and attention have been attached to file inside.  
+A example for training while monitoring on loss and ac curve.More details and attention have been attached to file inside. 
+
 * **python-cmd**  
 Linux command execution through python file , provided as a easy but sufficient demo.  
+
 * **shuffle**  
-**Randomly** generate small subdataset from the dataset. 
+Randomly generate small subdataset from the dataset. 
+
 * **match_check**   
-Verify if images and annotations do not correspond and output the associated file names.
+Verify if images and annotations do not correspond and output the associated file names.  
+
+* **crop_bbox_and_save**   
+Crop bbox area from raw image and save for other usage.
+ 
+
