@@ -2,14 +2,14 @@
 The code is used for calculating Hu-Moment, Superpix and conducting on some experiments.Besides , it provided a template for usage of `matplotlib`.
 
 ## Details
-* HuMoment
-Basic display template.
-* Superpix
-Method for  full-screen display.
+* **HuMoment**  
+Basic display template.  
+* **Superpix**  
+Method for  full-screen display.  
 
 ## Result
 Display some result and you can copy the corresponding code to the desired type as follow: 
-* HuMoment
+* **HuMoment**  
 <div align=center><img width="600" height="480" src="https://github.com/ming71/toolbox/blob/master/matplotlib/4vars.png"/></div><br/>
 
 <div align=center><img width="600" height="480" src="https://github.com/ming71/toolbox/blob/master/matplotlib/crop_3D_8.png"/></div><br/>
@@ -18,7 +18,7 @@ Display some result and you can copy the corresponding code to the desired type 
 
 <div align=center><img width="600" height="480" src="https://github.com/ming71/toolbox/blob/master/matplotlib/s&r_no_canny.png"/></div><br/>
 
-* Superpix
+* **Superpix**   
 <div align=center><img width="600" height="480" src="https://github.com/ming71/toolbox/blob/master/matplotlib/superpix.png"/></div><br/>
 
 ## Reference
