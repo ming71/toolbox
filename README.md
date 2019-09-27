@@ -22,6 +22,8 @@ This tool helps you to convert json file created by labelme to COCO style for tr
     1.If you want to label the segmentation mask , there is `no need` to label bbox!(Or bugs arised)<br> 
     2.When using labelme , pls named mask according to COCO format,such as `vehicle_car_1`.(supercategory,category,instance id)<br> 
 * **voc2coco**<br>
+* **voc2yolo**  
+Yolo format: class_id + Normalized xywh (id markded from 0) for each row.
 
 
 ## voc_extraction
@@ -41,7 +43,7 @@ Provided a template for plotting 2D and 3D figure.
 
 ## other tools
 * **data_partition**  
-Helpful of partition of dataset.
+Helpful of partition for dataset.
 
 * **img_format_trans**    
 A simple tool for conversion of image format.  
@@ -60,5 +62,10 @@ Verify if images and annotations do not correspond and output the associated fil
 
 * **crop_bbox_and_save**   
 Crop bbox area from raw image and save for other usage.
+
+* **generate_imageset**  
+Generate trainval setting files.  
+(Two mode included:yolo and voc)
+
  
 
