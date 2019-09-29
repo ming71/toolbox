@@ -15,7 +15,6 @@ NWPU VHR-10's label is showed as follow:
 2,(366,278),(453,661)
 4,(541,633),(727,698)
 ```
-## voc_extraction
 * **extraction**  
 User-friendly work for extracting imformation from xml files. And an example is attached for better understanding.  
 
@@ -23,12 +22,16 @@ User-friendly work for extracting imformation from xml files. And an example is 
 It's a bit hard to finish this work , cause the widespread wrong version about it , I hate plagiarism :)  
 This tool helps you to convert json file created by labelme to COCO style for training .  
 
-**Attentions:**   
+  **Attentions:**   
     1.If you want to label the segmentation mask , there is `no need` to label bbox!(Or bugs arised)   
     2.When using labelme , pls named mask according to COCO format,such as `vehicle_car_1`.(supercategory,category,instance id)   
+  
 * **voc2coco**  
+
+  Just use it.
+
 * **voc2yolo**  
-Yolo format: class_id + Normalized xywh (id markded from 0) for each row.
+  Yolo format: class_id + Normalized xywh (id markded from 0) for each row.
 
 
 
