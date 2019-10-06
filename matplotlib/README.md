@@ -6,6 +6,8 @@ The code is used for calculating Hu-Moment, Superpix and conducting on some expe
 Basic display template.  
 * **Superpix**  
 Method for  full-screen display.  
+* **drawing-board**  
+Used to compare different images.
 
 ## Result
 Display some result and you can copy the corresponding code to the desired type as follow: 
