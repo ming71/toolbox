@@ -73,5 +73,6 @@ Crop bbox area from raw image and save for other usage.
 Generate trainval setting files.  
 (Two mode included:yolo and voc)
 
- 
+ * **K-means**   
+K-means  implement for box clustering.
 
