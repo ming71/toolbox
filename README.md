@@ -63,8 +63,6 @@ Beside,`exec` commond also helps for many cases ,take good use of it.(such as [d
 * **shuffle**  
 Randomly generate small subdataset from the dataset. 
 
-* **match_check**   
-Verify if images and annotations do not correspond and output the associated file names.  
 
 * **crop_bbox_and_save**   
 Crop bbox area from raw image and save for other usage.
@@ -76,3 +74,5 @@ Generate trainval setting files.
  * **K-means**   
 K-means  implement for box clustering.
 
+* **operate_on_datasets**  
+Operations on dataset , such as copy, label matching. 
