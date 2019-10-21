@@ -14,4 +14,4 @@ The code help visualize log `txt` file . Many detectors output its training info
 ## Result    
 Parse the `result.txt`   and visualize the results of `mAP` , `Loss`  as follows:
 
-<div align=center><img width="600" height="480" src="https://github.com/ming71/toolbox/blob/master/log_show/log.png"/></div><br/>
+<div align=center><img width="800" height="480" src="https://github.com/ming71/toolbox/blob/master/log_show/log.png"/></div><br/>
