@@ -1,6 +1,6 @@
 '''
 2019.10.8  ming71
-功能:  对box进行kmeans聚类
+功能:  对box进行anchor的kmeans聚类
 注意:  
     - 停止条件是最小值索引不变而不是最小值不变，会造成早停，可以改
     - 暂时仅支持voc标注
@@ -129,11 +129,33 @@ def get_all_boxes(path):
     return boxes
 
 
+def analyse_anchor(save_path):
+    from decimal import Decimal
+    with open(save_path,'r') as f:
+        contents = f.read()
+        w = list(map(int, contents.split(',')[::2]))
+        h = list(map(int, contents.split(',')[1::2]))
+        
+        anchors = [anchor for anchor in zip(w,h)]
+
+        ratio = [Decimal(anchor[0]/anchor[1]).quantize(Decimal('0.00')) for anchor in anchors] 
+        ratio.sort()
+        area =  [Decimal(anchor[0]*anchor[1]).quantize(Decimal('0.00')) for anchor in anchors] 
+        area.sort()
+
+        #####   自定义需要分析的数据  ###
+        squre=[float(s)**0.5 for s in area]
+        print('ratio:\n{}\n\narea:\n{}\n'.format(ratio,area))
+        print(squre)
+
+    
 if __name__ == "__main__":
-    cluster_number = 9              # 种子点个数,即anchor数目
-    label_path = r'/py/datasets/ship/tiny_ships/yolo_ship/train_labels'
-    save_path = r'/py/yolov3/cfg/anchor-cluster.txt'
+    cluster_number = 3              # 种子点个数,即anchor数目
+    label_path = '/py/datasets/ship/tiny_ships/yolo_ship/train_labels'
+    save_path  = 'anchor-cluster.txt'
 
     all_boxes = get_all_boxes(label_path)   
     kmeans = Kmeans(cluster_number, all_boxes,save_path)
     kmeans.clusters()
+
+    analyse_anchor(save_path)
