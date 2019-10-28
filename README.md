@@ -33,29 +33,44 @@ Just use it.
 Yolo format: class_id + Normalized xywh (id markded from 0) for each row.
 
 
+## dataset
+* **data_partition**  
+Helpful of partition for dataset.  
+
+* **shuffle**  
+Randomly generate small subdataset from the dataset.   
+
+* **generate_imageset**  
+Generate trainval setting files.  
+(Two mode included:yolo and voc)  
+
+* **operate_on_datasets**  
+Operations on dataset , such as copy, label matching.   
 
 
 ## data augmentation
 * **augmentation**   
 Various kinds of data augmentation implementions as well as some demos are concluded inside .
 
+
 ## drawbox
 * **drawbox**  
 Useful tool for drawing bbox through providied points.The only customed part is your points obtaining function. 
 
+
 ## matplotlib
 Provided a template for plotting 2D and 3D figure.
+
 
 ## log_show
 Visualization for training log files.
 
+
 ## Spider
 Easy implemention for crawling info from website.
 
-## other tools
-* **data_partition**  
-Helpful of partition for dataset.
 
+## other tools
 * **img_format_trans**    
 A simple tool for conversion of image format.  
 
@@ -66,19 +81,13 @@ A example for training while monitoring on loss and ac curve.More details and at
 Linux command execution through python file , provided as a easy but sufficient demo.  
 Beside,`exec` commond also helps for many cases ,take good use of it.(such as [drawing pictures](https://github.com/ming71/toolbox/blob/b473ea001c2498fe927115d0c4a66d1cd4e30a7f/matplotlib/HuMonent.py#L172))  
 
-* **shuffle**  
-Randomly generate small subdataset from the dataset. 
-
 
 * **crop_bbox_and_save**   
 Crop bbox area from raw image and save for other usage.
 
-* **generate_imageset**  
-Generate trainval setting files.  
-(Two mode included:yolo and voc)
 
  * **K-means**   
 K-means  implement for box clustering.
 
-* **operate_on_datasets**  
-Operations on dataset , such as copy, label matching. 
+* **skewiou**
+For skewiou calc.
