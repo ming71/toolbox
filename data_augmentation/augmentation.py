@@ -80,7 +80,11 @@ def Rot_Scale(img,img_file,img_dst,xml_src,xml_dst):
     rewrite_label('rot_scale',xml_src+'/'+img_file[:-4]+'.xml',xml_dst+'/'+img_file[:-4]+'.xml',M)
 
 
-
+def Gamma(img,img_file,img_dst,xml_src,xml_dst):
+    gm = random.uniform(0.7,1.4)
+    img = np.power(img/float(np.max(img)), gm)*np.max(img)
+    cv2.imwrite(os.path.join(img_dst,img_file), img)
+    rewrite_label('blur',xml_src+'/'+img_file[:-4]+'.xml',xml_dst+'/'+img_file[:-4]+'.xml')
 
 # 0.5概率边缘模糊
 def Blur(img,img_file,img_dst,xml_src,xml_dst):
