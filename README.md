@@ -34,11 +34,8 @@ Yolo format: class_id + Normalized xywh (id markded from 0) for each row.
 
 
 ## dataset
-* **data_partition**  
+* **tiny_data_partition**  & **data_partition**
 Helpful of partition for dataset.  
-
-* **shuffle**  
-Randomly generate small subdataset from the dataset.   
 
 * **generate_imageset**  
 Generate trainval setting files.  
