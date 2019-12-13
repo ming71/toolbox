@@ -134,6 +134,24 @@ def get_DOTA_points(label_path):
     return object_coors  
 
 
+
+# for ICDAR style（四点八坐标txt格式）
+def get_ICDAR_points(label_path):
+    with open(label_path,'r',encoding='UTF-8-sig') as f:        
+        contents=f.read()
+        lines=contents.split('\n')
+        lines = [x for x in contents.split('\n')  if x]	 # 移除空格
+
+        object_coors=[]	# coor内一个元素是一个物体，含四个点8坐标
+        for object in lines:
+            coors = object.split(',')
+            x0 = coors[0]; y0 = coors[1]; x1 = coors[2]; y1 = coors[3]
+            x2 = coors[4]; y2 = coors[5]; x3 = coors[6]; y3 = coors[7]
+            object_coors.append(np.array([x0,y0,x1,y1,x2,y2,x3,y3]).reshape(4,2).astype(np.int32))
+    return object_coors  
+
+
+
 # for yolo style（归一化的xywh，txt格式）
 # yolo比较特殊，文件夹下有img有txt label，需要区分筛选
 # 为了简单，图像格式设置jpg，可手动更改
@@ -203,8 +221,8 @@ if __name__ == "__main__":
     # save_path = '/py/datasets/ship/tiny_ships/yolo_ship/single_class/train_imgs'
     
     # 注意：如果是yolo，img和label放到一个文件夹下，并且路径设置也要一样
-    img_path = '/py/datasets/HRSC+/partition/val'
-    label_path = '/py/datasets/HRSC+/partition/val'
+    img_path = '/py/datasets/HRSC+/removed'
+    label_path = '/py/datasets/HRSC+/removed'
     func = get_yolo_points
     
     
@@ -216,13 +234,14 @@ if __name__ == "__main__":
         xml_files.sort()
         iterations = zip(img_files,xml_files)
         for iter in iterations:
-            assert os.path.splitext(iter[0])[0]==os.path.splitext(iter[1])[0],'图像和label不匹配！'
+            if func != get_ICDAR_points:
+                assert os.path.splitext(iter[0])[0]==os.path.splitext(iter[1])[0],'图像和label不匹配！'
             # 选择label的模式
             # object_coors = get_yolo_points(os.path.join(label_path,iter[1]), rotate=True)
             if not iter[0].endswith('.txt'):
-                object_coors = func(os.path.join(label_path,iter[1]), rotate=True)
+                object_coors = func(os.path.join(label_path,iter[1]),True)
                 if len(object_coors):
-                    drawbox(os.path.join(img_path,iter[0]),object_coors,False)
+                    drawbox(os.path.join(img_path,iter[0]),object_coors)
                 else:
                     print('No obj!')
     
