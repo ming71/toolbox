@@ -37,18 +37,22 @@ def check(imgs_path,labels_path,force=False):
 
 
 # 文件复制(当前不支持递归复制,文件夹下不能包含子文件夹)
-def copy(src,dst):
+def copy(src, dst, postfix = None):
 	src_files = os.listdir(src)
 	for src_file in tqdm(src_files):
 		src_file = os.path.join(src,src_file)					  # 绝对路径
 		dst_file = os.path.join(dst,os.path.split(src_file)[1])   # 绝对路径
-		copyfile(src_file,dst_file)
+		if postfix != None:
+			if src_file.endswith(postfix):
+				copyfile(src_file,dst_file)
+		else:
+			copyfile(src_file,dst_file)
 
 if __name__ == "__main__":
-	# src = '/py/datasets/COCO2014/labels/val2014'
-	# dst = '/media/bit530/ming/env/dataset/COCO2014/yolo-coco/labels/val2014'
-	# copy(src,dst)
+	 src = '/py/datasets/ICDAR2015/yolo/13+15/train'
+	 dst = '/py/datasets/ICDAR2015/yolo/13+15/train_img'
+	 copy(src, dst, postfix='.jpg')
 
-	imgs = '/py/datasets/COCO2014/train2014'
-	labels = '/py/datasets/COCO2014/labels/train2014'
-	check(imgs,labels,force=True)
+	# imgs = '/media/bit530/ming/env/dataset/tiny_ship/val_imgs'
+	# labels = '/media/bit530/ming/env/dataset/tiny_ship/val_single_label'
+	# check(imgs,labels,force=True)
