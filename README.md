@@ -29,13 +29,23 @@ This tool helps you to convert json file created by labelme to COCO style for tr
 * **voc2coco**    
 Just use it.
   
-* **voc2yolo**    
+* **xml2yolo**    
 Yolo format: class_id + Normalized xywh (id markded from 0) for each row.
+Supported xml style: **VOC**, **HRSC**(8 points & rotated)
+
+* **ICDAR2yolo**   
+For challenge 4, trans polygon to rbox in yolo format.(btw, challenge1 labeled w.o rotation!)  
 
 
 ## dataset
-* **tiny_data_partition**  & **data_partition**
-Helpful of partition for dataset.  
+* **dataset_partition**
+Dataset partition for train, val, test part.
+**mark**: `x2` means train + val, `x3` means train + val + test.
+Remember to enlarge val & test set if your dataset is tiny. (such as 6:2:2) 
+
+* **subdataset_generation**
+Division of subset from total dataset, used for hyperparameter adjust.
+(you can regard it as `x1` dataset_partition)
 
 * **generate_imageset**  
 Generate trainval setting files.  
@@ -45,9 +55,11 @@ Generate trainval setting files.
 Operations on dataset , such as copy, label matching.   
 
 
-## data augmentation
+## data augmentation  
 * **augmentation**   
-Various kinds of data augmentation implementions as well as some demos are concluded inside .
+Various kinds of data augmentation implementions as well as some demos are concluded inside .  
+* **img_aug**  
+Strongly recommended! Various tools for augmentation and easy to get started.  
 
 
 ## drawbox
@@ -88,3 +100,6 @@ K-means  implement for box clustering.
 
 * **skewiou**  
 For skewiou calc.
+
+* **zip**
+zip and unzip files.
