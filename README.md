@@ -37,22 +37,22 @@ Supported xml style: **VOC**, **HRSC**(8 points & rotated)
 For challenge 4, trans polygon to rbox in yolo format.(btw, challenge1 labeled w.o rotation!)  
 
 
-## dataset
-* **dataset_partition**
-Dataset partition for train, val, test part.
-**mark**: `x2` means train + val, `x3` means train + val + test.
-Remember to enlarge val & test set if your dataset is tiny. (such as 6:2:2) 
+## dataset  
+* **dataset_partition**  
+Dataset partition for train, val, test part.  
+**mark**: `x2` means train + val, `x3` means train + val + test.  
+Remember to enlarge val & test set if your dataset is tiny. (such as 6:2:2)   
 
-* **subdataset_generation**
-Division of subset from total dataset, used for hyperparameter adjust.
-(you can regard it as `x1` dataset_partition)
+* **subdataset_generation**    
+Division of subset from total dataset, used for hyperparameter adjust.  
+(you can regard it as `x1` dataset_partition)  
 
-* **generate_imageset**  
-Generate trainval setting files.  
-(Two mode included:yolo and voc)  
+* **generate_imageset**    
+Generate trainval setting files.    
+(Two mode included:yolo and voc)    
 
-* **operate_on_datasets**  
-Operations on dataset , such as copy, label matching.   
+* **operate_on_datasets**    
+Operations on dataset , such as copy, label matching.     
 
 
 ## data augmentation  
@@ -101,5 +101,5 @@ K-means  implement for box clustering.
 * **skewiou**  
 For skewiou calc.
 
-* **zip**
+* **zip**  
 zip and unzip files.
