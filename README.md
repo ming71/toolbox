@@ -27,10 +27,9 @@ This tool helps you to convert json file created by labelme to COCO style for tr
     2.When using labelme , pls named mask according to COCO format,such as `vehicle_car_1`.(supercategory,category,instance id)    
 
 * **voc2coco**    
-Just use it.
   
 * **xml2yolo**    
-Yolo format: class_id + Normalized xywh (id markded from 0) for each row.
+Yolo format: class_id + Normalized xywh (id markded from 0) for each row.  
 Supported xml style: **VOC**, **HRSC**(8 points & rotated)
 
 * **ICDAR2yolo**   
