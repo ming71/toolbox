@@ -55,7 +55,7 @@ def get_HRSCplus_points(label_path,rotate=False):
 
 
 # for xml style(四点八坐标)
-def get_xml_points(label_path):
+def get_xml_points(label_path, rotate=False):
     with open(label_path,'r') as f:        
         contents=f.read()
         objects=contents.split('<object>')	
@@ -117,7 +117,7 @@ def get_HRSC_points(label_path,rotate=False):
 
 
 # for DOTA style（四点八坐标txt格式）
-def get_DOTA_points(label_path):
+def get_DOTA_points(label_path, rotate=False):
     with open(label_path,'r') as f:        
         contents=f.read()
         lines=contents.split('\n')
@@ -136,7 +136,7 @@ def get_DOTA_points(label_path):
 
 
 # for ICDAR style（四点八坐标txt格式）
-def get_ICDAR_points(label_path):
+def get_ICDAR_points(label_path,rotate=False):
     with open(label_path,'r',encoding='UTF-8-sig') as f:        
         contents=f.read()
         lines=contents.split('\n')
@@ -221,9 +221,9 @@ if __name__ == "__main__":
     # save_path = '/py/datasets/ship/tiny_ships/yolo_ship/single_class/train_imgs'
     
     # 注意：如果是yolo，img和label放到一个文件夹下，并且路径设置也要一样
-    img_path = '/py/datasets/HRSC+/removed'
-    label_path = '/py/datasets/HRSC+/removed'
-    func = get_yolo_points
+    img_path = '/py/BoxesCascade/ICDAR15/train_img/img_34.jpg'
+    label_path = '/py/BoxesCascade/ICDAR15/train_label/gt_img_34.txt' #34
+    func = get_ICDAR_points
     
     
     # for folder
@@ -247,7 +247,7 @@ if __name__ == "__main__":
     
     # for single img
     elif os.path.isfile(label_path):
-        object_coors = func(os.path.join(label_path), rotate=True)
+        object_coors = func(os.path.join(label_path),rotate=False)
         if len(object_coors):
             drawbox(img_path,object_coors,False)
     else:
