@@ -35,6 +35,8 @@ Supported xml style: **VOC**, **HRSC**(8 points & rotated)
 * **ICDAR2yolo**   
 For challenge 4, trans polygon to rbox in yolo format.(btw, challenge1 labeled w.o rotation!)  
 
+* **ICDAR2VOC**
+trans from IC15 to VOC format.
 
 ## dataset  
 * **dataset_partition**  
