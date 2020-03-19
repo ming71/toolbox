@@ -19,7 +19,7 @@ NWPU VHR-10's label is showed as follow:
 * **voc2txt**  
 User-friendly work for extracting imformation from xml files. And an example is attached for better understanding.  
 
-* **labelme2COCO**  
+* **labelme2coco**  
 It's a bit hard to finish this work , cause the widespread wrong version about it , I hate plagiarism :)  
 This tool helps you to convert json file created by labelme to COCO style for training.     
 **Attentions:**   
@@ -32,11 +32,13 @@ This tool helps you to convert json file created by labelme to COCO style for tr
 Yolo format: class_id + Normalized xywh (id markded from 0) for each row.  
 Supported xml style: **VOC**, **HRSC**(8 points & rotated)
 
-* **ICDAR2yolo**   
+* **icdar2yolo**   
 For challenge 4, trans polygon to rbox in yolo format.(btw, challenge1 labeled w.o rotation!)  
 
-* **ICDAR2VOC**
+* **icdar2voc**  
 trans from IC15 to VOC format.
+
+
 
 ## dataset  
 * **dataset_partition**  
@@ -67,6 +69,8 @@ Strongly recommended! Various tools for augmentation and easy to get started.
 * **drawbox**  
 Useful tool for drawing bbox through providied points.The only customed part is your points obtaining function. 
 
+## mAP
+Support rbox evaluation and mAP calculation for object detection.
 
 ## matplotlib
 Provided a template for plotting 2D and 3D figure.
