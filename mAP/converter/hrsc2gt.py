@@ -118,7 +118,7 @@ def convert_gt(gt_path, dst_path, level=1):
                 a  = eval(obj[obj.find('<mbox_ang>')+10 : obj.find('</mbox_ang>')])/math.pi*180
                 pt = sort_corners(rbox_2_quad([cx,cy,w,h,a]))[0]    # xyxyxyxy
                 name = class_mapping(cls_id,level)
-                with open(dst_gt[i],'w') as fd:
+                with open(dst_gt[i],'a') as fd:
                     if diffculty == '0':
                         fd.write('{} {:.0f} {:.0f} {:.0f} {:.0f} {:.0f} {:.0f} {:.0f} {:.0f}\n'.format(
                             name,pt[0],pt[1],pt[2],pt[3],pt[4],pt[5],pt[6],pt[7]
