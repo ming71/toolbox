@@ -102,15 +102,16 @@ def convert_gt(gt_path, dst_path, level=1):
     for i, filename in enumerate(tqdm(files)):
         with open(filename,'r',encoding='utf-8-sig') as f:
             content = f.read()
-            assert '<HRSC_Object>'  in content, 'Background picture occurred in %s'%filename
             objects = content.split('<HRSC_Object>')
             info = objects.pop(0)
+            nt = 0
             for obj in objects:
                 assert len(obj) != 0, 'No onject found in %s'%filename
                 cls_id = obj[obj.find('<Class_ID>')+10 : obj.find('</Class_ID>')]
                 diffculty = obj[obj.find('<difficult>')+11 : obj.find('</difficult>')]
                 if cls_id in ['100000027', '100000022'] :
                     continue
+                nt += 1
                 cx = (eval(obj[obj.find('<mbox_cx>')+9 : obj.find('</mbox_cx>')]))
                 cy = (eval(obj[obj.find('<mbox_cy>')+9 : obj.find('</mbox_cy>')]))
                 w  = (eval(obj[obj.find('<mbox_w>')+8 : obj.find('</mbox_w>')]))
@@ -129,11 +130,15 @@ def convert_gt(gt_path, dst_path, level=1):
                         ))
                     else:
                         raise RuntimeError('???? difficult wronging!!')                    
-    
+            if nt == 0:
+                os.remove(filename)
+                os.remove(filename.replace('Annotations','AllImages').replace('xml','bmp'))
+
+
 
 if __name__ == "__main__":
     level = 1
-    gt_path = '/py/BoxesCascade/HRSC2016/minitest/Annotations' # 给定的gt文件夹
+    gt_path = '/py/BoxesCascade/HRSC2016/Train/Annotations' # 给定的gt文件夹
     dst_path = '/py/BoxesCascade/test/ground-truth'
 
     convert_gt(gt_path, dst_path,level)
