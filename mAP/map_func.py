@@ -24,7 +24,7 @@ def skewiou(box1, box2):
         print('formatting errors for boxes!!!! ')
         return 0
     if  poly1.area == 0 or  poly2.area  == 0 :
-        return 0
+        return 0, 0
     inter = Polygon(poly1).intersection(Polygon(poly2)).area
     union = poly1.area + poly2.area - inter
     if union == 0:
