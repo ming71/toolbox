@@ -31,3 +31,6 @@ eval_mAP(root_dir)
 * `difficult` string attached to gt will escape certain object from being included.(such as HRSC, ICDAR).
 * `ignore` variabel make it possible to ignore certain class from eval.
 * Horizontal bbox eval can be conducted via coordinate trans, or just use this repo [Cartucho/mAP](https://github.com/Cartucho/mAP).
+
+#### map_func
+make convenient for  calling.
