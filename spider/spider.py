@@ -5,8 +5,8 @@
 
 Bug Report:
     没有解决windows的txt在linux下读取bug的程序问题。
-解决方案：
     将文本的内容复制到网页上，然后粘贴到linux下新建的txt空白文本即可。
+    不同笔记本的文档建立格式不同同理，可以更改提供的coding方式，再不行就复制粘贴，断点调试words输出可识别即可
 '''
 import requests
 from urllib.parse import quote
@@ -30,7 +30,7 @@ if __name__ == "__main__":
                 os.remove(save_path)
                 files.pop(files.index(save_path))
 
-            with open(path,'r') as f:
+            with open(path,'r') as f:   # encoding='utf-8'
                 with open(save_path,'a') as fw:
                     contents = f.readlines()
                     words = [word.strip('\n').strip(' ') for word in contents]
@@ -40,7 +40,8 @@ if __name__ == "__main__":
                         urlencode = quote(word)
                         url='http://bcc.blcu.edu.cn/zh/search/2/' + urlencode
                         req = requests.get(url)  
-                        result=req.text[req.text.index('共')+1:req.text.index('个结果')].strip(' ') # 搜索目标结果
+                        import ipdb; ipdb.set_trace()
+                        result=req.text[req.text.index('\t    共')+6:req.text.index('个结果')].strip(' ') # 搜索目标结果
                         fw.write(result+'\n')
 
     elif os.path.isfile(src_path):
