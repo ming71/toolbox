@@ -30,7 +30,7 @@ if __name__ == "__main__":
                 os.remove(save_path)
                 files.pop(files.index(save_path))
 
-            with open(path,'r') as f:   # encoding='utf-8'
+            with open(path,'r') as f:   # encoding='utf-8'，'gbk'
                 with open(save_path,'a') as fw:
                     contents = f.readlines()
                     words = [word.strip('\n').strip(' ') for word in contents]
