@@ -75,6 +75,8 @@ Support rbox evaluation and mAP calculation for object detection.
 ## matplotlib
 Provided a template for plotting 2D and 3D figure.
 
+## excel 
+Simple examples for excel files processing via pandas.
 
 ## log_show
 Visualization for training log files.
