@@ -176,7 +176,8 @@ def voc_eval(detpath,
     #print('check sorted_ind: ', sorted_ind)
 
     ## note the usage only in numpy not for list
-    BB = BB[sorted_ind, :]
+    if len(sorted_ind) != 0:
+        BB = BB[sorted_ind, :]
     image_ids = [image_ids[x] for x in sorted_ind]
     #print('check imge_ids: ', image_ids)
     #print('imge_ids len:', len(image_ids))
@@ -269,7 +270,7 @@ def voc_eval(detpath,
 
     return rec, prec, ap
 
-def main():
+def eval_map(detpath,annopath,imagesetfile):
 
     # ##TODO: wrap the code in the main
     # detpath = r'/home/dingjian/Documents/Research/experiments/light_head_faster_rotbox_best_point/Task1_results_0.1_nms_epoch18/results/Task1_{:s}.txt'
@@ -277,10 +278,6 @@ def main():
     # imagesetfile = r'/home/dingjian/code/DOTA/DOTA/media/testset.txt'
     # classnames = ['plane', 'baseball-diamond', 'bridge', 'ground-track-field', 'small-vehicle', 'large-vehicle', 'ship', 'tennis-court',
     #             'basketball-court', 'storage-tank',  'soccer-ball-field', 'roundabout', 'harbor', 'swimming-pool', 'helicopter']
-
-    detpath = r'PATH_TO_BE_CONFIGURED/Task1_{:s}.txt'
-    annopath = r'PATH_TO_BE_CONFIGURED/{:s}.txt' # change the directory to the path of val/labelTxt, if you want to do evaluation on the valset
-    imagesetfile = r'PATH_TO_BE_CONFIGURED/valset.txt'
 
     # For DOTA-v1.5
     # classnames = ['plane', 'baseball-diamond', 'bridge', 'ground-track-field', 'small-vehicle', 'large-vehicle', 'ship', 'tennis-court',
@@ -313,5 +310,36 @@ def main():
     print('map:', map)
     classaps = 100*np.array(classaps)
     print('classaps: ', classaps)
+
+def generate_iamgeset(img_folder,dst_file):
+    files = os.listdir(img_folder)
+    with open(dst_file,'w') as f:
+        for file in files:
+            filename, extension = os.path.splitext(file)
+            if extension in ['.jpg', '.bmp','.png']:
+                f.write(filename + '\n')
+
+# dets和annos都是15txt大文件
+'''
+康康这个evaluate是怎么做的：
+detpath是meige后大图上的15个txt结果的文件夹，但是注意最后用Task1_{:s}.txt，或者{:s}.txt输入全部txt文件，否则报文件夹的错
+annopath是dataset直接给的，每个大图一个label的那个文件夹路径，同样最后注意加{:s}.txt索引txt文件
+imagesetfile每行是一张图像的名称，如P1000.png，生成所有待测试的图像名即可（已提供函数实现）
+
+note：
+- 源程序在某类的det全为空时会报错，我改了下加了个判定，记录一下如果出问题可以改回，参见line179-180
+'''
+
 if __name__ == '__main__':
-    main()
+
+    detpath = r'/data-tmp/stela-master/DOTA/DOTA_devkit/Task1_merge/Task1_{:s}.txt'
+    annopath = r'/data-tmp/stela-master/DOTA/DOTA_devkit/example/labelTxt/{:s}.txt' # change the directory to the path of val/labelTxt, if you want to do evaluation on the valset
+    imagesetfile = r'/data-tmp/stela-master/DOTA/DOTA_devkit/example/images/trainset.txt'
+
+    generate_iamgeset('/data-tmp/stela-master/DOTA/DOTA_devkit/example/images', imagesetfile)
+
+    eval_map(
+        detpath,
+        annopath,
+        imagesetfile
+    )
