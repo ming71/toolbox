@@ -18,44 +18,45 @@ NWPU VHR-10's label is showed as follow:
 
 * **voc2txt**  
 User-friendly work for extracting imformation from xml files. And an example is attached for better understanding.  
-
 * **labelme2coco**  
 It's a bit hard to finish this work , cause the widespread wrong version about it , I hate plagiarism :)  
 This tool helps you to convert json file created by labelme to COCO style for training.     
 **Attentions:**   
     1.If you want to label the segmentation mask , there is `no need` to label bbox!(Or bugs arised)   
     2.When using labelme , pls named mask according to COCO format,such as `vehicle_car_1`.(supercategory,category,instance id)    
-
 * **voc2coco**    
-  
 * **xml2yolo**    
 Yolo format: class_id + Normalized xywh (id markded from 0) for each row.  
 Supported xml style: **VOC**, **HRSC**(8 points & rotated)
-
 * **icdar2yolo**   
 For challenge 4, trans polygon to rbox in yolo format.(btw, challenge1 labeled w.o rotation!)  
-
 * **icdar2voc**  
 trans from IC15 to VOC format.
+* **dota2xml**
 
 
 
 ## dataset  
+
+* **DOTA_devkit**
+
+  Toolkits for DOTA datasets, with some annotations and modification attached. (Images are deleted for portability, examples can be found in official codebase)
+
 * **dataset_partition**  
-Dataset partition for train, val, test part.  
-**mark**: `x2` means train + val, `x3` means train + val + test.  
-Remember to enlarge val & test set if your dataset is tiny. (such as 6:2:2)   
+  Dataset partition for train, val, test part.  
+  **mark**: `x2` means train + val, `x3` means train + val + test.  
+  Remember to enlarge val & test set if your dataset is tiny. (such as 6:2:2)   
 
 * **subdataset_generation**    
-Division of subset from total dataset, used for hyperparameter adjust.  
-(you can regard it as `x1` dataset_partition)  
+  Division of subset from total dataset, used for hyperparameter adjust.  
+  (you can regard it as `x1` dataset_partition)  
 
 * **generate_imageset**    
-Generate trainval setting files.    
-(Two mode included:yolo and voc)    
+  Generate trainval setting files.    
+  (Two mode included:yolo and voc)    
 
 * **operate_on_datasets**    
-Operations on dataset , such as copy, label matching.     
+  Operations on dataset , such as copy, label matching.     
 
 
 ## data augmentation  
@@ -82,8 +83,17 @@ Simple examples for excel files processing via pandas.
 Visualization for training log files.
 
 
-## Spider
+## spider
 Easy implemention for crawling info from website.
+
+## visualization
+
+Feature visualization tools.
+
+## Plug-and-play
+
+* asff-fpn
+* bam-attention
 
 
 ## other tools
