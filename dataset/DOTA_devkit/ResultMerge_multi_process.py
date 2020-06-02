@@ -262,6 +262,42 @@ def mergebypoly(srcpath, dstpath):
     mergebase_parallel(srcpath,
               dstpath,
               py_cpu_nms_poly_fast)
+
+
+''' 
+说明一下各个文件夹和路径
+看看demo中是怎么做的：
+      util.groundtruth2Task1(r'examplesplit/labelTxt',r'Task1')
+    - 输入： 检测的结果txt文件夹路径, 目标文件夹路径
+    - 功能： 将所有labelTxt下的检测结果整合到15个txt文件中，输出到Task1文件夹
+    - 输出：Task1文件夹下的15个文件
+    - 注意： 自己创建好输出的文件夹，否则报错
+
+    mergebypoly(r'Task1', r'Task1_merge')
+    - 输入：所有检测结果（15个txt文件）文件夹路径, 融合后输出路径
+    - 功能：将输入文件夹下15个txt文件进行内部整合拼接NMS，得到结果输出到目标文件夹，仍为15个txt
+    - 注意： 自己创建好输出的文件夹，否则报错
+
+    util.Task2groundtruth_poly(r'Task1_merge',r'restoredexample/labelTxt')
+    - 功能：将整合的15个txt文件重新按照图像名称进行逐文件分离
+    - 用处：可视化检测结果，直接调用DOTA对象可视化大图上所有目标的效果
+'''
+
+
 if __name__ == '__main__':
-    mergebypoly(r'path_to_configure', r'path_to_configure')
-    # mergebyrec()
+    # 有两个函数mergebypoly和mergebyrec，分别是直框和旋转目标的merg
+    outputs = ''        ## path to your det_res in txt format
+    integrated_outputs =   ''           ## 15 txt files
+    merged_outputs = ''         ## 15 txt files after NMS
+    dota_outputs = ''           ## split to each picture
+
+    for f in [integrated_outputs, merged_outputs, dota_outputs]: 
+        if not os.path.exists(f):
+            os.makedirs(f)
+
+    util.groundtruth2Task1(outputs, integrated_outputs)
+    mergebypoly(integrated_outputs, merged_outputs)
+    util.Task2groundtruth_poly(merged_outputs, dota_outputs)
+
+
+
