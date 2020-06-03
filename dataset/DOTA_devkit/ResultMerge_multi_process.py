@@ -9,11 +9,12 @@ import numpy as np
 import re
 import time
 import sys
+import shutil
 sys.path.insert(0,'..')
-try:
+try: 
     import dota_utils as util
 except:
-    import dota_kit.dota_utils as util
+    import datasets.DOTA_devkit.dota_utils as util
 import polyiou
 import pdb
 import math
@@ -264,12 +265,14 @@ def mergebypoly(srcpath, dstpath):
               py_cpu_nms_poly_fast)
 
 
+
 ''' 
+有两个函数mergebypoly和mergebyrec，分别是直框和旋转目标的merg
+
 说明一下各个文件夹和路径
-看看demo中是怎么做的：
-      util.groundtruth2Task1(r'examplesplit/labelTxt',r'Task1')
+      detections2Task1(r'outputs',r'Task1')
     - 输入： 检测的结果txt文件夹路径, 目标文件夹路径
-    - 功能： 将所有labelTxt下的检测结果整合到15个txt文件中，输出到Task1文件夹
+    - 功能： 将所有检测结果(格式为class_name conf x y x y x y x y )整合到15个txt文件中，输出到Task1文件夹
     - 输出：Task1文件夹下的15个文件
     - 注意： 自己创建好输出的文件夹，否则报错
 
@@ -284,20 +287,42 @@ def mergebypoly(srcpath, dstpath):
 '''
 
 
-if __name__ == '__main__':
-    # 有两个函数mergebypoly和mergebyrec，分别是直框和旋转目标的merg
-    outputs = ''        ## path to your det_res in txt format
-    integrated_outputs =   ''           ## 15 txt files
-    merged_outputs = ''         ## 15 txt files after NMS
-    dota_outputs = ''           ## split to each picture
 
-    for f in [integrated_outputs, merged_outputs, dota_outputs]: 
-        if not os.path.exists(f):
-            os.makedirs(f)
+# outputs是对分割后的图片检测的结果，每个txt res格式为：x y x y x y x y clsname imgname conf
+# integrated_outputs是将上面的res按照类别整合成dota提交的15个txt结果
+# merged_outputs将上面整合后的15txt进行拼接NMS
+# dota_outputs是检测可视化用的，eval不用；将merge后的15txt按照文件名分离成原图的label形式，配合DOTA.py进行可视化
 
-    util.groundtruth2Task1(outputs, integrated_outputs)
+def ResultMerge(outputs,
+                integrated_outputs,
+                merged_outputs,
+                dota_outputs = None):  # 如果dota_outputs不None说明是detect
+
+
+    if not os.listdir(outputs):
+        raise RuntimeError('No detection results founded in {} ! '.format(outputs))    
+
+    util.detections2Task1(outputs, integrated_outputs)
     mergebypoly(integrated_outputs, merged_outputs)
-    util.Task2groundtruth_poly(merged_outputs, dota_outputs)
+    if dota_outputs is not None:
+        if os.path.exists(dota_outputs):
+            shutil.rmtree(dota_outputs)
+        os.makedirs(dota_outputs)           
+        util.Task2groundtruth_poly(merged_outputs, dota_outputs)
+
+
+if __name__ == '__main__':
+    root_dir = '/data-tmp/stela-master/outputs'
+    outputs = 'detections'                  ## path to your det_res in txt format
+    integrated_outputs = 'integrated'       ## 15 txt files
+    merged_outputs = 'merged'               ## 15 txt files after NMS
+    dota_outputs = 'dota_outs'              ## split to each picture
+
+    ResultMerge(root_dir,
+                outputs,
+                integrated_outputs,
+                merged_outputs,
+                dota_outputs) 
 
 
 

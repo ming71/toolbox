@@ -2,13 +2,20 @@
 #  Licensed under the Simplified BSD License [see bsd.txt]
 
 import os
+import sys
 import matplotlib.pyplot as plt
 from matplotlib.collections import PatchCollection
 from matplotlib.patches import Polygon, Circle
 import numpy as np
-import dota_utils as util
 from collections import defaultdict
 import cv2
+
+try: 
+    import dota_utils as util
+except:
+    import datasets.DOTA_devkit.dota_utils as util
+
+
 
 def _isArrayLike(obj):
     if type(obj) == str:
@@ -96,6 +103,7 @@ class DOTA:
         ax.add_collection(p)
         p = PatchCollection(circles, facecolors='red')
         ax.add_collection(p)
+        # plt.savefig(imgId)
     def loadImgs(self, imgids=[]):
         """
         :param imgids: integer ids specifying img
@@ -115,8 +123,8 @@ class DOTA:
 
 if __name__ == '__main__':
     ## 注意这个是root_dir，下级包括images和labelTxt两个文件夹
-    dota = DOTA('/data-tmp/stela-master/DOTA/train')
-    imgids = dota.getImgIds(catNms=['plane']) # 返回所有包含这些catNms类别的图片名称，如此处['P1234', 'P2709']
+    dota = DOTA('/data-tmp/stela-master/outputs/test')
+    imgids = dota.getImgIds() # 返回所有包含这些catNms类别的图片名称，如此处['P1234', 'P2709'];可指定特定类如catNms=['plane']
     img = dota.loadImgs(imgids)  ## 每个元素是对应图片的HWC像素矩阵
     for imgid in imgids:
         anns = dota.loadAnns(imgId=imgid)

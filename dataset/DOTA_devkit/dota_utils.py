@@ -68,7 +68,7 @@ def parse_dota_poly(filename):
                     object_struct['name'] = splitlines[8]
             if (len(splitlines) == 9):
                 object_struct['difficult'] = '0'
-            elif (len(splitlines) >= 10):
+            elif (len(splitlines) == 10):
                 # if splitlines[9] == '1':
                 # if (splitlines[9] == 'tr'):
                 #     object_struct['difficult'] = '1'
@@ -76,6 +76,11 @@ def parse_dota_poly(filename):
                 object_struct['difficult'] = splitlines[9]
                 # else:
                 #     object_struct['difficult'] = 0
+            #### customed format
+            elif (len(splitlines) > 10):
+                object_struct['conf'] = float(splitlines[-1])
+                object_struct['filename'] = splitlines[-2]
+                object_struct['classname'] = splitlines[-3]
             object_struct['poly'] = [(float(splitlines[0]), float(splitlines[1])),
                                      (float(splitlines[2]), float(splitlines[3])),
                                      (float(splitlines[4]), float(splitlines[5])),
@@ -257,3 +262,27 @@ def get_best_begin_point(coordinate):
     if force_flag != 0:
         print("choose one direction!")
     return  combinate[force_flag]
+
+
+
+
+
+def detections2Task1(srcpath, dstpath):
+    filelist = GetFileFromThisRootDir(srcpath)
+    # names = [custombasename(x.strip())for x in filelist]
+    filedict = {}
+    for cls in wordname_15:
+        fd = open(os.path.join(dstpath, 'Task1_') + cls + r'.txt', 'w')
+        filedict[cls] = fd
+    for filepath in filelist:
+        objects = parse_dota_poly2(filepath)
+
+        subname = custombasename(filepath)
+        pattern2 = re.compile(r'__([\d+\.]+)__\d+___')
+        rate = re.findall(pattern2, subname)[0]
+
+        for obj in objects:
+            category = obj['classname']
+            poly = obj['poly']
+            outline = obj['filename'] + ' ' + str(obj['conf']) + ' ' + ' '.join(map(str, poly))
+            filedict[category].write(outline + '\n')

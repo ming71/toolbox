@@ -26,12 +26,20 @@ under root_dir:
 └── labelTxt
 ```
 
-### ops
-1. Remove background files while split images.
-2. Some annotations.
-
 
 ### mark here
 1. After ImgSplit, `diffcult = 2` means this instance is truncated and iou with whole gt < 0.7, you'd better abandon it.
 2. Instances with diffcult > 1 will not be included during evaluation.
 3. Official codes don't support remove bg files, you can achieve it via API I provided here.
+4. If you want to save PR-curve result, check codes in dota_evaluation_task1(`eval_map`)
+
+## modification
+* DOTA.py
+  some annotations.
+* dota_utils.py
+  add `detections2Task1` func which help to trans your det_res to required format.(line80 and last).
+* ResultMerge_multi_proces.py
+  repackage and attach some notes.
+* dota_evaluation_task1.py
+  repackage and attach some notes for better usage.
+* ImgSplit_multi_proces.py

@@ -254,11 +254,11 @@ def voc_eval(detpath,
 
     # compute precision recall
 
-    print('check fp:', fp)
-    print('check tp', tp)
+    # print('check fp:', fp)
+    # print('check tp', tp)
 
 
-    print('npos num:', npos)
+    # print('npos num:', npos)
     fp = np.cumsum(fp)
     tp = np.cumsum(tp)
 
@@ -288,7 +288,7 @@ def eval_map(detpath,annopath,imagesetfile):
     classaps = []
     map = 0
     for classname in classnames:
-        print('classname:', classname)
+        # print('classname:', classname)
         rec, prec, ap = voc_eval(detpath,
              annopath,
              imagesetfile,
@@ -297,23 +297,25 @@ def eval_map(detpath,annopath,imagesetfile):
              use_07_metric=True)
         map = map + ap
         #print('rec: ', rec, 'prec: ', prec, 'ap: ', ap)
-        print('ap: ', ap)
+        # print('ap: ', ap)
         classaps.append(ap)
 
         # umcomment to show p-r curve of each category
-        # plt.figure(figsize=(8,4))
-        # plt.xlabel('recall')
-        # plt.ylabel('precision')
-        # plt.plot(rec, prec)
-       # plt.show()
+        plt.figure(figsize=(8,4))
+        plt.xlabel('recall')
+        plt.ylabel('precision')
+        plt.plot(rec, prec)
+        plt.show()
+        plt.savefig('PR-curve')
     map = map/len(classnames)
-    print('map:', map)
+    # print('map:', map)
     classaps = 100*np.array(classaps)
-    print('classaps: ', classaps)
+    # print('classaps: ', classaps)
+    return map, classaps
 
-def generate_iamgeset(img_folder,dst_file):
+def generate_iamgeset(img_folder, imagesetfile):
     files = os.listdir(img_folder)
-    with open(dst_file,'w') as f:
+    with open(imagesetfile,'w') as f:
         for file in files:
             filename, extension = os.path.splitext(file)
             if extension in ['.jpg', '.bmp','.png']:
@@ -330,16 +332,25 @@ note：
 - 源程序在某类的det全为空时会报错，我改了下加了个判定，记录一下如果出问题可以改回，参见line179-180
 '''
 
-if __name__ == '__main__':
+def task1_eval(detpath, val_folder):
+    img_dir = os.path.join(val_folder, 'images')
+    imagesetfile = os.path.join(val_folder, 'imageset.txt')
+    generate_iamgeset(img_dir, imagesetfile)
+    
+    detpath =  detpath + '/' + 'Task1_{:s}.txt'
+    annopath = os.path.join(val_folder, 'labelTxt') + '/' + '{:s}.txt'
+    map, classaps = eval_map(
+                        detpath,
+                        annopath,
+                        imagesetfile
+                    )
+    return map, classaps
 
-    detpath = r'/data-tmp/stela-master/DOTA/DOTA_devkit/Task1_merge/Task1_{:s}.txt'
-    annopath = r'/data-tmp/stela-master/DOTA/DOTA_devkit/example/labelTxt/{:s}.txt' # change the directory to the path of val/labelTxt, if you want to do evaluation on the valset
-    imagesetfile = r'/data-tmp/stela-master/DOTA/DOTA_devkit/example/images/trainset.txt'
 
-    generate_iamgeset('/data-tmp/stela-master/DOTA/DOTA_devkit/example/images', imagesetfile)
+if __name__ == "__main__":
+    
+    detpath = r'/data-tmp/stela-master/datasets/DOTA_devkit/Task1_merge'
+    val_folder = r'/data-tmp/stela-master/datasets/DOTA_devkit/example' # change the directory to the path of val/labelTxt, if you want to do evaluation on the valset
 
-    eval_map(
-        detpath,
-        annopath,
-        imagesetfile
-    )
+    map, classaps = task1_eval(detpath, val_folder)
+    print(map, classaps)
