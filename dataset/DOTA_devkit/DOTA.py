@@ -101,9 +101,9 @@ class DOTA:
         ax.add_collection(p)
         p = PatchCollection(polygons, facecolors='none', edgecolors=color, linewidths=2)
         ax.add_collection(p)
-        p = PatchCollection(circles, facecolors='red')
+#         p = PatchCollection(circles, facecolors='red')
         ax.add_collection(p)
-        # plt.savefig(imgId)
+        plt.savefig(imgId,dpi=300)
     def loadImgs(self, imgids=[]):
         """
         :param imgids: integer ids specifying img
@@ -123,7 +123,7 @@ class DOTA:
 
 if __name__ == '__main__':
     ## 注意这个是root_dir，下级包括images和labelTxt两个文件夹
-    dota = DOTA('/data-tmp/stela-master/outputs/test')
+    dota = DOTA('/data-tmp/stela-master/datasets/DOTA_devkit/example')
     imgids = dota.getImgIds() # 返回所有包含这些catNms类别的图片名称，如此处['P1234', 'P2709'];可指定特定类如catNms=['plane']
     img = dota.loadImgs(imgids)  ## 每个元素是对应图片的HWC像素矩阵
     for imgid in imgids:

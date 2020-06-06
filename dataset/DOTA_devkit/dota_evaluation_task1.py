@@ -297,7 +297,7 @@ def eval_map(detpath,annopath,imagesetfile):
              use_07_metric=True)
         map = map + ap
         #print('rec: ', rec, 'prec: ', prec, 'ap: ', ap)
-        # print('ap: ', ap)
+#         print('ap: ', ap)
         classaps.append(ap)
 
         # umcomment to show p-r curve of each category
@@ -310,7 +310,7 @@ def eval_map(detpath,annopath,imagesetfile):
     map = map/len(classnames)
     # print('map:', map)
     classaps = 100*np.array(classaps)
-    # print('classaps: ', classaps)
+    print('classaps: ', classaps)
     return map, classaps
 
 def generate_iamgeset(img_folder, imagesetfile):

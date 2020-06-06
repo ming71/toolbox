@@ -303,7 +303,10 @@ if __name__ == '__main__':
     ## 注意这里路径是root_dir，下设images和labelTxt两个文件夹
 
     raw_root_dir = r'/data-tmp/stela-master/DOTA/train'
-    split_root_dir = r'/data-tmp/stela-master/DOTA/split_train'
+    split_root_dir = r'/data-tmp/stela-master/DOTA/trainsplit'
+
+#     raw_root_dir = r'/data-tmp/stela-master/DOTA/val'
+#     split_root_dir = r'/data-tmp/stela-master/DOTA/valsplit'
 
     start = time.clock()
     split = splitbase(raw_root_dir,
@@ -313,8 +316,6 @@ if __name__ == '__main__':
                       num_process=8
                       )
     split.splitdata(1)
-    # split.splitdata(2)
-    # split.splitdata(0.5)
 
     rm_background(split_root_dir)
 
