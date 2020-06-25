@@ -101,51 +101,39 @@ def is_float_between_0_and_1(value):
          precision monotonically decreasing
     2nd) We compute the AP as the area under this curve by numerical integration.
 """
-def voc_ap(rec, prec):
+def voc_ap(rec, prec, use_07_metric=False):
+    """ ap = voc_ap(rec, prec, [use_07_metric])
+    Compute VOC AP given precision and recall.
+    If use_07_metric is true, uses the
+    VOC 07 11 point method (default:False).
     """
-    --- Official matlab code VOC2012---
-    mrec=[0 ; rec ; 1];
-    mpre=[0 ; prec ; 0];
-    for i=numel(mpre)-1:-1:1
-            mpre(i)=max(mpre(i),mpre(i+1));
-    end
-    i=find(mrec(2:end)~=mrec(1:end-1))+1;
-    ap=sum((mrec(i)-mrec(i-1)).*mpre(i));
-    """
-    rec.insert(0, 0.0) # insert 0.0 at begining of list
-    rec.append(1.0) # insert 1.0 at end of list
-    mrec = rec[:]
-    prec.insert(0, 0.0) # insert 0.0 at begining of list
-    prec.append(0.0) # insert 0.0 at end of list
-    mpre = prec[:]
-    """
-     This part makes the precision monotonically decreasing
-        (goes from the end to the beginning)
-        matlab: for i=numel(mpre)-1:-1:1
-                    mpre(i)=max(mpre(i),mpre(i+1));
-    """
-    # matlab indexes start in 1 but python in 0, so I have to do:
-    #     range(start=(len(mpre) - 2), end=0, step=-1)
-    # also the python function range excludes the end, resulting in:
-    #     range(start=(len(mpre) - 2), end=-1, step=-1)
-    for i in range(len(mpre)-2, -1, -1):
-        mpre[i] = max(mpre[i], mpre[i+1])
-    """
-     This part creates a list of indexes where the recall changes
-        matlab: i=find(mrec(2:end)~=mrec(1:end-1))+1;
-    """
-    i_list = []
-    for i in range(1, len(mrec)):
-        if mrec[i] != mrec[i-1]:
-            i_list.append(i) # if it was matlab would be i + 1
-    """
-     The Average Precision (AP) is the area under the curve
-        (numerical integration)
-        matlab: ap=sum((mrec(i)-mrec(i-1)).*mpre(i));
-    """
-    ap = 0.0
-    for i in i_list:
-        ap += ((mrec[i]-mrec[i-1])*mpre[i])
+    if use_07_metric:
+        mrec = np.concatenate(([0.], rec, [1.]))
+        mpre = np.concatenate(([0.], prec, [0.]))
+        # 11 point metric
+        ap = 0.
+        for t in np.arange(0., 1.1, 0.1):
+            if np.sum(rec >= t) == 0:
+                p = 0
+            else:
+                p =  np.max(np.array(prec)[rec >= t])
+            ap = ap + p / 11.
+    else:
+        # correct AP calculation
+        # first append sentinel values at the end
+        mrec = np.concatenate(([0.], rec, [1.]))
+        mpre = np.concatenate(([0.], prec, [0.]))
+
+        # compute the precision envelope
+        for i in range(mpre.size - 1, 0, -1):
+            mpre[i - 1] = np.maximum(mpre[i - 1], mpre[i])
+
+        # to calculate area under PR curve, look for points
+        # where X axis (recall) changes value
+        i = np.where(mrec[1:] != mrec[:-1])[0]
+
+        # and sum (\Delta recall) * prec
+        ap = np.sum((mrec[i + 1] - mrec[i]) * mpre[i + 1])
     return ap, mrec, mpre
 
 
@@ -290,7 +278,7 @@ def draw_plot_func(dictionary, n_classes, window_title, plot_title, x_label, out
 #############################################################
 ############################################################
 
-def eval_mAP(root_dir):
+def eval_mAP(root_dir, use_07_metric = False):
         
     MINOVERLAP = 0.5    # default value (defined in the PASCAL VOC2012 challenge)
 
@@ -706,7 +694,7 @@ def eval_mAP(root_dir):
                 prec[idx] = float(tp[idx]) / (fp[idx] + tp[idx] + 1e-6)
             #print(prec)
 
-            ap, mrec, mprec = voc_ap(rec[:], prec[:])
+            ap, mrec, mprec = voc_ap(rec[:], prec[:],use_07_metric=use_07_metric)
             sum_AP += ap
             text = "{0:.2f}%".format(ap*100) + " = " + class_name + " AP " #class_name + " AP = {0:.2f}%".format(ap*100)
             """
@@ -780,11 +768,11 @@ def eval_mAP(root_dir):
             img_path = IMG_PATH + '/' + img_id + ".jpg"
             img = cv2.imread(img_path)
         # draw false negatives
-        for obj in ground_truth_data:
-            if not obj['used']:
-                bbgt = [ int(round(float(x))) for x in obj["bbox"].split() ]
-                cv2.rectangle(img,(bbgt[0],bbgt[1]),(bbgt[2],bbgt[3]),pink,2)
-        cv2.imwrite(img_cumulative_path, img)
+#         for obj in ground_truth_data:
+#             if not obj['used']:
+#                 bbgt = [ int(round(float(x))) for x in obj["bbox"].split() ]
+#                 cv2.rectangle(img,(bbgt[0],bbgt[1]),(bbgt[2],bbgt[3]),pink,2)
+#         cv2.imwrite(img_cumulative_path, img)
 
     # remove the temp_files directory
     shutil.rmtree(TEMP_FILES_PATH)

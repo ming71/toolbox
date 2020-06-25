@@ -97,9 +97,6 @@ Feature visualization tools.
 
 
 ## other tools
-* **img_format_trans**    
-A simple tool for conversion of image format.  
-
 * **visdom-train-example**  
 A example for training while monitoring on loss and ac curve.More details and attention have been attached to file inside. 
 
