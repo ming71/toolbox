@@ -1,5 +1,4 @@
 #  ming71
-#  2019.10.21
 
 #  将打印的训练log文件读取数据并显示;支持多模型比较
 #  自定义：info参数部分和信息提取部分，以及draw的额外参数
@@ -16,6 +15,8 @@ def get_info(log_path):
     Loss = []
     Reg = []
     Obj = []
+    Var = []
+    Ref = []
     Precision = []
     Recall = []
     mAP = []
@@ -26,25 +27,29 @@ def get_info(log_path):
         for line in lines:
             line = [i for i in filter(None,line.split(" "))]    # 将行的空格去掉分割成一个个字符
             # 下面的信息提取自定义(下面以yolov3为例)
-            # yolov3的格式为：Epoch,gpu_mem,Reg,obj,cls,total,targets,img_size,P,R,mAP,F1,val Reg,val Objectness,val Classification
-            epoch,_,obj,cls,reg,total,_,_,p,r,map,f1,*_ = line
-            epoch = int(epoch.split('/')[0])    
+            ## 根据log文件的条目设置好各个参数的位置，append到对应的list中
+            # yolov3的格式为：Epoch, gpu_mem, Reg,obj, cls, total, targets, img_size, P, R, mAP, F1
+            if len(line) == 12:
+                epoch,_,obj,cls,reg,total,_,_,p,r,map,f1,*_ = line
+                obj = float(obj)
+                Obj.append(obj)
+
+            # elif len(line) == 13:
+            #     epoch,_,ref,cls,reg,var,total,_,_,p,r,map,f1,*_ = line
+            #     var = float(var)
+            #     ref = float(ref)
+            #     Var.append(var)
+            #     Ref.append(ref)
             total = float(total)
-            p   = float(p)
-            r   = float(r)
-            map = float(map)
-            f1  = float(f1)
-            reg = float(reg)
-            obj = float(obj)
-            Epoch.append(epoch)
+            F1.append(float(f1))
+            Epoch.append(int(epoch.split('/')[0]))
             Loss.append(total)
             Reg.append(reg)
-            Obj.append(obj)
-            Precision.append(p)
-            Recall.append(r)
-            mAP.append(map)
-            F1.append(f1)
-    info = dict(epoch = Epoch, loss = Loss, reg = Reg,obj = Obj, precision = Precision, recall = Recall, mAP = mAP)
+            Precision.append(float(p))
+            Recall.append(float(r))
+            mAP.append(float(map))
+    info = dict(epoch = Epoch, loss = Loss, reg = Reg,obj = Obj,
+                precision = Precision, recall = Recall, mAP = mAP, f1 = F1)
     return info
         
 
@@ -76,11 +81,12 @@ def draw(infos, mode=['mAP','loss','precision','recall','P-R'], label=[]):
         col = 3 
         print('大于4张图的，自己手动布局一下matplotlib的显示方式，设置row和cols即可')
     
-    plt.figure(figsize=(12, 8),num='log') 
+    # plt.figure(figsize=(12, 8),num='log') 
+    plt.figure(num='log') 
 
     # 调整图片生成的位置（距左上xy分别480 110）
     mngr = plt.get_current_fig_manager()
-    mngr.window.wm_geometry("+400+110")
+    # mngr.window.wm_geometry("+400+110")
 
     color = ['red','C0','C1','C2','violet','brown','m','teal','blue','orange','cyan']
     for cnt,info in enumerate(infos):
@@ -88,13 +94,19 @@ def draw(infos, mode=['mAP','loss','precision','recall','P-R'], label=[]):
             if type == 'loss' :
                 plt.subplot(row, col, i+1) 
                 plt.plot(info['epoch'], info['loss'], color=color[cnt], linestyle="-",  linewidth=1, label=label[cnt]) 
-                display_settings(xlabel='epoch',ylabel='loss',ylim=(0,1),info=infos,grid=True)
+                display_settings(xlabel='epoch',ylabel='loss',ylim=(0,5),info=infos,grid=True)
 
             elif type == 'mAP':
                 plt.subplot(row, col, i+1) 
                 plt.plot(info['epoch'], info['mAP'], color=color[cnt], linestyle="-",  linewidth=1, label=label[cnt]) 
                 display_settings(xlabel='epoch',ylabel='mAP',ylim=(0,1),yticks=np.arange(0, 1, 0.1),info=infos,grid=True)
-                
+
+            elif type == 'f1':
+                import ipdb; ipdb.set_trace()
+                plt.subplot(row, col, i+1) 
+                plt.plot(info['epoch'], info['f1'], color=color[cnt], linestyle="-",  linewidth=1, label=label[cnt]) 
+                display_settings(xlabel='epoch',ylabel='F1',ylim=(0,1),yticks=np.arange(0, 1, 0.1),info=infos,grid=True)
+                 
 
             elif type =='precision':
                 plt.subplot(row, col, i+1) 
@@ -125,18 +137,20 @@ def draw(infos, mode=['mAP','loss','precision','recall','P-R'], label=[]):
 
 if __name__ == "__main__":
 
-    results = [ '/py/rotated-yolo/results.txt',
-                 '/py/rotated-yolo/result/baseline.txt',
-                 '/py/rotated-yolo/result/ga.txt',
-                 '/py/rotated-yolo/result/dcn.txt',
-                 '/py/rotated-yolo/result/orn8.txt',
-                 '/py/rotated-yolo/result/se.txt',
+    root_dir = r'D:\研究生\工作\AnchorMatching\experiments\mAP'
+    results = [ 
+                's0_416_0.3',
+                's0_416_0.5',
+                's0_416_noassigner_0.3',
+                's1_416_0.3-0.5'
             ]
+    suffix = '.txt'
+    filename = [os.path.join(root_dir, x+suffix) for x in results]
 
-    labels = [os.path.splitext(os.path.split(x)[1])[0] for x in results]
-    infos = [get_info(res) for res in results]
+    labels = [os.path.splitext(os.path.split(x)[1])[0] for x in filename]
+    infos = [get_info(res) for res in filename]
 
     draw(infos, 
-          mode=['mAP','precision','recall','loss','reg','obj'],  
+          mode=['mAP','loss'],  
           label=labels)
 
