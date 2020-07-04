@@ -17,6 +17,6 @@ os.system(cmd2)
 xml_src = r'/py/R2CNN-tensorflow/data/VOCdevkit/VOCdevkit_train/clip/aug/xml_src'
 xml_dst = r'/py/R2CNN-tensorflow/data/VOCdevkit/VOCdevkit_train/clip/aug/xml_dst'
 
-os.system('cp -r {} {}'.format(xml_src+'/* ',xml_dst))  # 注意src需要加'/*'
+os.system('cp -r {} {}'.format(xml_src+'/* ',xml_dst))  # 注意src需要加'/*'，如果只移动src的图片，则/*.jpg
 
 
