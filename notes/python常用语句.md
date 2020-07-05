@@ -19,7 +19,14 @@
 
 
 
+##### list转str
 
+```
+str = "".join(list)
+str = " ".join(list)
+str = ".".join(list)
+str = "\n".join(list)
+```
 
 
 
@@ -27,7 +34,16 @@
 
 ---
 
+##### 获取当前路径
+
+```
+root_dir = os.getcwd()
+```
+
+---
+
 ##### 路径和文件名分离
+
 方法：
 > os.path.split( )  
 > os.path.splitext( )  
