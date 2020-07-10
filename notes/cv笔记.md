@@ -42,11 +42,22 @@
 
 ---
 
-##### 最小外接矩形
-
-参考函数：[地址](https://blog.csdn.net/dcrmg/article/details/52260699)
+##### 最小外接矩形以及xywha转四点坐标
 
 程序实现：[地址](http://www.1zlab.com/wiki/python-opencv-tutorial/opencv-coutour-rect/)
+
+```
+cnt = np.array([[x1,y1],[x2,y2],[x3,y3],[x4,y4]]) # 必须是array数组的形式
+rect = cv2.minAreaRect(cnt) # 得到最小外接矩形的（中心(x,y), (宽,高), 旋转角度）
+box = cv2.cv.BoxPoints(rect) # 获取最小外接矩形的4个顶点坐标
+```
+
+注意事项：
+
+1. opencv中的角度定义：x轴的正半轴逆时针旋转碰到矩形第一条边是width，转过的角度是theta，其中顺时针为正
+2. 输入直接转化为numpy数组往往会报错，因为cv2支持的`cv2.minAreaRect`输入是`int32/float32`，而直接转换得到的是`float64`，所以转换时：`cnt = np.array(cnt, dtype=np.float32)`
+
+
 
 ---
 
