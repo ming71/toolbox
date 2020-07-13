@@ -58,6 +58,10 @@ trans from IC15 to VOC format.
 * **operate_on_datasets**    
   Operations on dataset , such as copy, label matching.     
 
+## rotation
+
+codes for rotational object detection. 
+
 
 ## data augmentation  
 * **augmentation**   
@@ -110,10 +114,7 @@ Crop bbox area from raw image and save for other usage.
 
 
  * **K-means**   
-K-means  implement for box clustering.
-
-* **skewiou**  
-For skewiou calc.
+  K-means  implement for box clustering.
 
 * **zip**  
 zip and unzip files.

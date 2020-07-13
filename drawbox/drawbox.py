@@ -199,7 +199,7 @@ def get_yolo_points(img_path, rotate=False):
 
 
 # 输入：单张图片和其标注xml提取的所有物体坐标的list,save_flag
-# coor格式：array([[ 43, 436],[103, 496],[472, 127],[412,  67]]
+# 遍历的单个coor格式：array([[ 43, 436],[103, 496],[472, 127],[412,  67]]
 def drawbox(img_path,object_coors,save_flag=False,save_path=None):
     print(img_path)
     img=cv2.imread(img_path,1)
@@ -221,7 +221,7 @@ if __name__ == "__main__":
     # save_path = '/py/datasets/ship/tiny_ships/yolo_ship/single_class/train_imgs'
     
     # 注意：如果是yolo，img和label放到一个文件夹下，并且路径设置也要一样
-    img_path = '/py/BoxesCascade/ICDAR15/train_img/img_34.jpg'
+    img_path = r'C:/Users/xiaoming/Desktop/5.jpg'
     label_path = '/py/BoxesCascade/ICDAR15/train_label/gt_img_34.txt' #34
     func = get_ICDAR_points
     
@@ -246,9 +246,12 @@ if __name__ == "__main__":
                     print('No obj!')
     
     # for single img
-    elif os.path.isfile(label_path):
-        object_coors = func(os.path.join(label_path),rotate=False)
+    elif os.path.isfile(img_path):
+        # object_coors = func(os.path.join(label_path),rotate=False)
+        ## test coors:
+        object_coors = [np.array([[296, 245] ,[351 ,266],[263, 507], [208, 487]])]
         if len(object_coors):
             drawbox(img_path,object_coors,False)
     else:
         print('Path Not Matched!!!')
+

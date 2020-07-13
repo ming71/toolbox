@@ -48,8 +48,9 @@
 
 ```
 cnt = np.array([[x1,y1],[x2,y2],[x3,y3],[x4,y4]]) # 必须是array数组的形式
-rect = cv2.minAreaRect(cnt) # 得到最小外接矩形的（中心(x,y), (宽,高), 旋转角度）
-box = cv2.cv.BoxPoints(rect) # 获取最小外接矩形的4个顶点坐标
+rect = cv2.minAreaRect(cnt) # （中心(x,y), (宽,高), 旋转角度）【注意是tuple】
+box = cv2.boxPoints(rect) # 获取最小外接矩形的4个顶点坐标
+【注意】上面的输入输出rect都是tuple，形如：cv2.boxPoints(((cx,cy),(w,h),a))
 ```
 
 注意事项：

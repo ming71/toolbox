@@ -223,3 +223,13 @@ a = Decimal(a).quantize(Decimal('0.00'))       0.33
 a = Decimal(a).quantize(Decimal('0.0000'))   0.3300
 ```
 
+---
+
+##### tqdm设置描述语
+
+```
+pbar = tqdm(["a", "b", "c", "d"])
+for char in pbar:
+	pbar.set_description("Processing %s" % char)
+```
+
