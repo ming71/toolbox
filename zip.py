@@ -1,6 +1,10 @@
 import os,os.path
 import zipfile
- 
+
+
+
+
+## Method 1: python
 def zip_dir(dirname,zipfilename):
     filelist = []
     if os.path.isfile(dirname):
@@ -36,6 +40,16 @@ def unzip_file(zipfilename, unziptodir):
             outfile.write(zfobj.read(name))
             outfile.close()
  
+
+## Method 2 : linux cmd
+# 有些比赛要求指定的压缩文件目录，method1无法方便地创建递归目录；
+# zip命令-r可以递归创建，但是会带上父目录，为了避免这样，cd到指定目录进行创建。安装的话：
+# sudo apt-get update && sudo apt-get install zip
+# 下面创建的是名为submission.zip的压缩文件，解压后一级目录test下是所有的label
+os.system('cd {} && zip -r -q  {} {} '.format(root_dir, 'submission.zip', 'test'))
+
+
+
 if __name__ == '__main__':
 
     ## zip files
