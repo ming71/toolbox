@@ -26,8 +26,10 @@
 
 ##### 最值索引
 
-> x.max(0)    # 按列比较，找出每列的最大值和索引
-> x.max(1)    # 按行比较，找出每行的最大值和索引
+```
+x.max(0)    # 按列比较，找出每列的最大值和索引
+x.max(1)    # 按行比较，找出每行的最大值和索引
+```
 
 ---
 
@@ -45,14 +47,16 @@ v[2].fill_(2)
 
 ##### 随机数种子
 
-> def setup_seed(seed):
-> 	torch.manual_seed(seed)					 # CPU
-> 	torch.cuda.manual_seed_all(seed)	   # GPU	
-> 	np.random.seed(seed)						 # numpy
-> 	random.seed(seed)							  # random
-> 	torch.backends.cudnn.deterministic = True	# cudnn
->
-> setup_seed(20)
+```
+def setup_seed(seed):
+	torch.manual_seed(seed)					 # CPU
+	torch.cuda.manual_seed_all(seed)	   # GPU	
+	np.random.seed(seed)						 # numpy
+	random.seed(seed)							  # random
+	torch.backends.cudnn.deterministic = True	# cudnn
+
+setup_seed(20)
+```
 
 ---
 
@@ -62,15 +66,43 @@ v[2].fill_(2)
 
 ---
 
+##### 数据类型转换
+
+方法一：现有的封装函数
+
+```
+# 假定一个tensor为： ts = torch.Tensor([1,2,3])
+ts.long() 		#  将tensor投射为long类型
+ts.half() 		#  将tensor投射为half类型
+ts.int() 		#  将tensor投射为int类型
+ts.float() 		#  将tensor投射为float类型
+ts.byte() 		#  将tensor投射为byte类型
+```
+
+方法二：torch.type()
+
+```
+ts = ts.type(torch.IntTensor) # 将ts转换为Int类型的张量
+```
+
+方法三：type_as()
+
+```
+a1.type_as(a2)  # 将a1转换为a2同类型
+```
+
+pytorch包含的张量类型有：
+
+| Data tyoe                | CPU tensor           | GPU tensor                |
+| ------------------------ | -------------------- | ------------------------- |
+| 32-bit floating point    | `torch.FloatTensor`  | `torch.cuda.FloatTensor`  |
+| 64-bit floating point    | `torch.DoubleTensor` | `torch.cuda.DoubleTensor` |
+| 16-bit floating point    | N/A                  | `torch.cuda.HalfTensor`   |
+| 8-bit integer (unsigned) | `torch.ByteTensor`   | `torch.cuda.ByteTensor`   |
+| 8-bit integer (signed)   | `torch.CharTensor`   | `torch.cuda.CharTensor`   |
+| 16-bit integer (signed)  | `torch.ShortTensor`  | `torch.cuda.ShortTensor`  |
+| 32-bit integer (signed)  | `torch.IntTensor`    | `torch.cuda.IntTensor`    |
+| 64-bit integer (signed)  | `torch.LongTensor`   | `torch.cuda.LongTensor`   |
 
 
-
-
-#### 三、各种问题
-
----
-
-##### undefined symbol: _ZN6caffe26detail37_typeMetaDataInstance_preallocated_32E
-
-cuda编译的函数导入时出现：undefined symbol: _ZN6caffe26detail37_typeMetaDataInstance_preallocated_32E解决办法：在import cuda函数之前先import torch即可。
 
