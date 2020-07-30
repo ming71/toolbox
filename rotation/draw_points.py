@@ -14,11 +14,13 @@ def pt2poly(pt, type=None, is_Radian=None):
         x, y, w, h = pt   
         x1 = x - 0.5 * w 
         y1 = y - 0.5 * h 
-        x2 = x + 0.5 * w 
-        y2 = y + 0.5 * h
-        pts = np.array([x1, y1, x2, y2], np.int32).reshape(2,2)
+        x3 = x + 0.5 * w 
+        y3 = y + 0.5 * h
+        pts = np.array([x1, y1, x3, y1, x3, y3, x1, y3], np.int32).reshape(4,2)
     elif len(pt) == 4 and type == 'xyxy':  
-        pts = pt.reshape(2,2)  
+        x1, y1, x3, y3 = pt
+        pts = [x1, y1, x3, y1, x3, y3, x1, y3]
+        pts = np.array(pts, np.int32).reshape(4,2)  
     elif len(pt) == 5 and type == 'xywh':
         cx, cy, w, h, a = pt
         if is_Radian:
@@ -42,11 +44,16 @@ def pt2poly(pt, type=None, is_Radian=None):
 
 
 if __name__ == "__main__":
-    pts = [567.44403076, 219.47401428, 355.92071533,  64.76139069, -0.89138275]
     type_pt = 'xywh'
     is_Radian = True
     canvas = InitCanvas(800, 800)
-    cv2.polylines(canvas,[pt2poly(pts, type_pt, is_Radian)],True,(0,0,255))
+
+    pt1 = [303.0208, 128.6641, 566.5746, 636.0571]
+    pt2 = [434.64666748, 383.18041992, 515.6463623 ,  85.30487061,-1.19663692]
+    canvas = cv2.polylines(canvas,[pt2poly(pt1, 'xyxy', is_Radian)],True,(0,0,255))
+    canvas = cv2.polylines(canvas,[pt2poly(pt2, type_pt, is_Radian)],True,(0,0,255))
+
+
     cv2.imshow('canvas', canvas)
     cv2.waitKey(0)
     cv2.destroyAllWindows()
