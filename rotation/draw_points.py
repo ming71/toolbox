@@ -36,7 +36,7 @@ def pt2poly(pt, type=None, is_Radian=None):
         h = y2 - y1
         pts = cv2.boxPoints(((cx, cy),(w,h), a))
     elif len(pt) == 8:
-        pts = pt.reshape(4,2)
+        pts = np.array(pt).reshape(4,2)
     else:
         raise RuntimeError
     return pts.astype(np.int32)
@@ -44,14 +44,13 @@ def pt2poly(pt, type=None, is_Radian=None):
 
 
 if __name__ == "__main__":
-    type_pt = 'xywh'
-    is_Radian = True
     canvas = InitCanvas(800, 800)
 
-    pt1 = [303.0208, 128.6641, 566.5746, 636.0571]
-    pt2 = [434.64666748, 383.18041992, 515.6463623 ,  85.30487061,-1.19663692]
-    canvas = cv2.polylines(canvas,[pt2poly(pt1, 'xyxy', is_Radian)],True,(0,0,255))
-    canvas = cv2.polylines(canvas,[pt2poly(pt2, type_pt, is_Radian)],True,(0,0,255))
+    pt1 = [125.746704, 240.16422 , 647.86505 , 126.337494, 673.55334 ,
+        244.16849 , 151.435   , 357.9952  ]
+    pt2 =[399.35003662, 242.16636658, 121.59864044, 535.38195801,-1.35614538]
+    canvas = cv2.polylines(canvas,[pt2poly(pt1, 'xyxy', is_Radian= None)],True,(0,0,255))
+    canvas = cv2.polylines(canvas,[pt2poly(pt2, 'xywh', is_Radian= True)],True,(0,0,255))
 
 
     cv2.imshow('canvas', canvas)
