@@ -2,6 +2,24 @@ import cv2
 import torch
 import numpy as np
 
+
+# filter valid boxes
+def mask_valid_boxes(boxes, return_mask=False):
+    """
+    :param boxes: (cx, cy, w, h,*_) 
+    :return: mask
+    """   
+    w = boxes[:,2]
+    h = boxes[:,3]
+    ar = np.maximum(w / (h + 1e-16), h / (w + 1e-16))
+    mask = (w > 2) & (h > 2) & (ar < 30) 
+    if return_mask:
+        return mask
+    else:
+        return boxes[mask]
+
+
+
 def xy2wh(boxes):
     """
     :param boxes: (xmin, ymin, xmax, ymax) (n, 4)

@@ -15,5 +15,9 @@ rbbx_overlaps(gt_rbboxes, query_boxes)
 
 ### bug report
 
-当输入box的w小于一定范围（大概0.01以下）时，IoU计算不是0而成为inf，0.1以上正常为0，保险起见将输入box的wh中小于0.1的置为0.1，不影响结果。未找到cu文件中bug出处，暂时这么处理。
+当输入box的w小于一定范围（大概0.01以下）时，IoU结果有一定概率不是0而成为inf，结果上有可能引发CUDA error或者overlap为nan。
+
+暂时未找到cu文件中bug出处。
+
+安全起见，送进来的box预先进行filter，保留宽高有效的box，参考[transform_rbox](https://github.com/ming71/toolbox/blob/master/rotation/transform_rbox.py)。
 
