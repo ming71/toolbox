@@ -51,8 +51,16 @@ def frequence_query(src_path):
 
 ## txt文件内所有汉字无视词语组合直接输出成单列
 ## merge关键字是词的长度，将字的结果相加得到词的组合。例如merge=3，每个词都是3个字进行组合相加
-def strokes_query(src_path,merge=0):
-    # 文件夹输入，将多输入和检索结果丢在一起比较方便
+# 文件夹输入，将多输入和检索结果丢在一起比较方便
+def strokes_query(src_path, merge=0, Online=True):
+    # 先parse数据库，为离线匹配做准备
+    with open('database.txt', 'r',encoding='utf-8') as fb:
+        database = fb.readlines()
+        strokes = {}
+        for charline in database:
+            char = charline.split(':')[0]
+            stroke = len(charline.split(','))
+            strokes[char] = stroke
     if os.path.isdir(src_path):     
         files = sorted(glob.glob(os.path.join(src_path, '*.*')))
         for path in files:
@@ -68,14 +76,18 @@ def strokes_query(src_path,merge=0):
                 with open(save_path,'a') as fw:
                     contents = f.read()
                     words = contents.replace('\n','').strip('')
-
                     for word in tqdm(words):
-                        url='http://bishun.strokeorder.info/mandarin.php?q=' + word
-                        req = requests.get(url) 
-                        content = req.content.decode('utf-8')
-                        time.sleep(1)
                         try:
-                            result = content[content.index('的笔画数:</b>')+9 : content.index(' &nbsp;   <b>'+word+'的结构:</b>')]
+                            if Online == True:
+                                # Method 1: online
+                                url='http://bishun.strokeorder.info/mandarin.php?q=' + word
+                                req = requests.get(url) 
+                                content = req.content.decode('utf-8')
+                                # time.sleep(1)
+                                result = content[content.index('的笔画数:</b>')+9 : content.index(' &nbsp;   <b>'+word+'的结构:</b>')]
+                            else:
+                                # Method 2: offline
+                                result = str(strokes[word])
                         except:
                             if word in uncommon_character.keys():
                                 result = str(uncommon_character[word])
@@ -113,8 +125,8 @@ def strokes_query(src_path,merge=0):
 
 
 
-# 笔画数网站未收录字
-uncommon_character = {'尬':7}
+# 网站或者数据库未收录字
+uncommon_character = {'尬':7, '矩':9}
 
 
 
@@ -123,7 +135,7 @@ if __name__ == "__main__":
 
     # frequence_query(src_path)
     # strokes_query(src_path,merge=2)    
-    strokes_query(src_path,merge=0)    
+    strokes_query(src_path, merge=0, Online=False)    
 
 
 
