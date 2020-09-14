@@ -13,6 +13,7 @@ import os
 import glob
 from tqdm import tqdm
 import sys
+import time
 
 def frequence_query(src_path):
     # 文件夹输入，将多输入和检索结果丢在一起比较方便
@@ -26,11 +27,10 @@ def frequence_query(src_path):
                 os.remove(save_path)
                 files.pop(files.index(save_path))
 
-            # with open(path,'r', encoding='utf-8',errors='ignore') as f:
-            with open(path,'r', encoding='gbk',errors='ignore') as f:
+            with open(path,'r', encoding='utf-8',errors='ignore') as f:
+            # with open(path,'r', encoding='gbk',errors='ignore') as f:
                 with open(save_path,'a') as fw:
                     contents = f.readlines()
-                    import ipdb; ipdb.set_trace()
                     words = [word.strip('\n').strip('') for word in contents]
                     assert len(contents)==len(words), '有空行，检查一下是不是输入有问题'
 
@@ -50,7 +50,8 @@ def frequence_query(src_path):
 
 
 ## txt文件内所有汉字无视词语组合直接输出成单列
-def strokes_query(src_path):
+## merge关键字是词的长度，将字的结果相加得到词的组合。例如merge=3，每个词都是3个字进行组合相加
+def strokes_query(src_path,merge=0):
     # 文件夹输入，将多输入和检索结果丢在一起比较方便
     if os.path.isdir(src_path):     
         files = sorted(glob.glob(os.path.join(src_path, '*.*')))
@@ -62,8 +63,8 @@ def strokes_query(src_path):
                 os.remove(save_path)
                 files.pop(files.index(save_path))
 
-            # with open(path,'r', encoding='utf-8',errors='ignore') as f:
-            with open(path,'r', encoding='gbk',errors='ignore') as f:
+            with open(path,'r', encoding='utf-8',errors='ignore') as f:
+            # with open(path,'r', encoding='gbk',errors='ignore') as f:
                 with open(save_path,'a') as fw:
                     contents = f.read()
                     words = contents.replace('\n','').strip('')
@@ -72,10 +73,38 @@ def strokes_query(src_path):
                         url='http://bishun.strokeorder.info/mandarin.php?q=' + word
                         req = requests.get(url) 
                         content = req.content.decode('utf-8')
-                        result = content[content.index('的笔画数')+9 : content.index('<br><br>\n\n<b>相关汉字的笔顺')]
-                        # print(word)
-                        # import ipdb; ipdb.set_trace()
+                        time.sleep(1)
+                        try:
+                            result = content[content.index('的笔画数:</b>')+9 : content.index(' &nbsp;   <b>'+word+'的结构:</b>')]
+                        except:
+                            if word in uncommon_character.keys():
+                                result = str(uncommon_character[word])
+                            else:
+                                print('生僻字未收录{}'.foramt(word))
+                                raise NotImplementedError                                   
+                        print(word,result)
                         fw.write(result+'\n')
+            
+            ## 将输出结果按词语重组
+            if merge > 0 :
+                word_res = os.path.join(src_path,os.path.splitext(file_name)[0]+'_word_result.txt')
+                if os.path.exists(word_res):
+                    os.remove(word_res)
+                    files.pop(files.index(word_res))    
+                with open(save_path,'r') as fs:
+                    strokes = [int(x.strip('\n')) for x in fs.readlines()]
+                    if merge == 2 :
+                        res = [i + j for i, j in zip(strokes[::2], strokes[1::2])]
+                    elif merge == 3 :
+                        res = [i + j + k for i, j, k in zip(strokes[::3] , strokes[1::3] , strokes[2::3])]
+                    elif merge == 4 :
+                        res = [i + j + k+l for i, j, k,l in zip(strokes[::4], strokes[1::4] ,strokes[2::4] ,strokes[4::4])]
+                    else:
+                        print('写一下多个词的合并规则，很简单')
+                        raise NotImplementedError       
+                with open(word_res,'w') as fm:
+                    merged = [str(x)  for x in res]
+                    fm.write('\n'.join(merged))
 
     elif os.path.isfile(src_path):
         print('将文件放到对应的文件夹下即可')
@@ -84,11 +113,17 @@ def strokes_query(src_path):
 
 
 
+# 笔画数网站未收录字
+uncommon_character = {'尬':7}
+
+
+
 if __name__ == "__main__":
     src_path = 'D:\\application\Jupyter Notebook\spider\search'
 
     # frequence_query(src_path)
-    strokes_query(src_path)
+    # strokes_query(src_path,merge=2)    
+    strokes_query(src_path,merge=0)    
 
 
 
