@@ -106,11 +106,12 @@ def make_gauss_from_rect(mesh, cx, cy, w, h, theta):
 def get_param_from_rect(cx, cy, w, h, theta):
     mean = (cx, cy)
     conv = 0.25 * np.array([
-        w**2 * np.cos(theta)**2 - h**2 * np.sin(theta)**2,
+        w**2 * np.cos(theta)**2 + h**2 * np.sin(theta)**2,
         (w**2 - h**2) * np.sin(theta) * np.cos(theta), 
         (w**2 - h**2) * np.sin(theta) * np.cos(theta), 
         w**2 * np.sin(theta)**2 + h**2 * np.cos(theta)**2,
     ]).reshape(2,2)
+    import ipdb; ipdb.set_trace()
     return mean, conv
 
 
@@ -182,4 +183,6 @@ def Const_from_Rect():
     plt.show()
 
 
+if __name__ == "__main__":
+    Const_from_Rect()
 
