@@ -32,6 +32,8 @@ def category_statistics(labels, CLASSES=None):
             for obj in objs:
                 classname, *_ = obj.strip().split()
                 assert classname in CLASSES, 'wrong classname in '.format(filename)
+                if classname=='1':
+                    print(label)
                 res_cnt[classname] += 1
     return res_cnt
 
@@ -41,6 +43,7 @@ def augment_ratio(cnt):
     scheduler = cnt.copy()
     for idx, classname in enumerate(scheduler.keys()):
         scheduler[classname] = rates[idx]
+    print(scheduler)
     return scheduler
 
 ## bbox trans 
@@ -101,8 +104,13 @@ class RA4(object):
         self.anno_path = osp.join(root_path, 'labels')  
         self.im_files = glob.glob(osp.join(self.im_path,'*.tif'))
         self.anno_files = glob.glob(osp.join(self.anno_path,'*.txt'))
-        self.dist_root = osp.split(self.root_path)[0] + '/augment'
+        self.dist_root = root_path.replace(osp.split(self.root_path)[1], osp.split(self.root_path)[1] + '_augment')
+        self.dist_im_dir = osp.join(self.dist_root, 'images')
+        self.dist_an_dir = osp.join(self.dist_root, 'labels')
         self.CLASSES = ('1', '2','3','4','5')
+
+        makedir(self.dist_im_dir)
+        makedir(self.dist_an_dir)
 
     def parse_annos(self, label):
         bboxes = []
@@ -116,9 +124,7 @@ class RA4(object):
         return classnames, np.array(bboxes)
     
     def save_labels(self, classnames, bboxes, filename):
-        dist_root = osp.join(self.dist_root, 'labels')
-        makedir(dist_root)
-        dist_label = osp.join(dist_root, filename + '.txt')
+        dist_label = osp.join(self.dist_an_dir, filename + '.txt')
         gt = ''
         for cls, bbox in zip(classnames,bboxes.tolist()):
             gt += cls + ' ' + ' '.join(str(i) for i in bbox) + '\n'
@@ -127,9 +133,7 @@ class RA4(object):
 
 
     def save_ims(self, im, filename):
-        dist_root = osp.join(self.dist_root, 'images')
-        makedir(dist_root)
-        dist_im = osp.join(dist_root, filename + '.tif')
+        dist_im = osp.join(self.dist_im_dir, filename + '.tif')
         cv2.imwrite(dist_im, im)
 
 
@@ -356,7 +360,8 @@ def random_affine(img,  targets=(), degree=10, translate=.1, scale=.1, shear=10)
 
 if __name__ == "__main__":
     
-    root_path = 'D:/Datasets/RAChallenge/Task4/warmup'
+    # root_path = '/data-input/RotationDet/data/RAChallenge/stage1/train'
+    root_path = '/data-input/RotationDet/data/RAChallenge/warmup'
     dataset = RA4(root_path)
     
     # augment schedule
@@ -365,19 +370,22 @@ if __name__ == "__main__":
     # augmentation
     pair = tqdm(zip(dataset.im_files, dataset.anno_files))
     for img_file, anno_file in pair:
-        pair.set_description("Image augmentation")
+        pair.set_description("augmentation on{}".format(img_file))
         filename = osp.splitext(osp.split(img_file)[1])[0]
         img = cv2.imread(img_file,1)
         classes, bboxes = dataset.parse_annos(anno_file)
-        iters = max([scheduler[x] for x in np.unique(classes)]) 
-        for iter in range(iters):
+        cnt = max([scheduler[x] for x in np.unique(classes)]) 
+        iters = tqdm(range(cnt))
+        for iter in iters:
             transform = Augment([   HSV(0.5, 0.5, p=0.1),
                                     HorizontalFlip(p=0.5),
                                     VerticalFlip(p=0.5),
-                                    Affine(degree=90, translate=0.1, scale=0, p=1),  
-                                    Noise(0.02, p=0.2),
-                                    Blur(1.3, p=0.5),
+                                    Affine(degree=90, translate=0.2, scale=0.2, p=0.7),  
+                                    # Noise(0.02, p=0.2),
+                                    # Blur(1.3, p=0.5),
                                     ],box_mode = 'xyxyxyxy')
             im, bboxes = transform(img, bboxes)
-            dataset.save_ims(im, filename)
-            dataset.save_labels(classes, bboxes, filename)
+            name = filename + '_' + str(iter)
+            dataset.save_ims(im, name)
+            dataset.save_labels(classes, bboxes, name)
+
