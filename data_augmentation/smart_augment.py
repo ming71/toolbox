@@ -39,7 +39,8 @@ def category_statistics(labels, CLASSES=None):
 
 def augment_ratio(cnt):
     objects = [x for x in  cnt.values()]
-    rates = [int(max(objects) / x) for x in objects]
+#    rates = [int(max(objects) / x) for x in objects]
+    rates = [int(max(objects) / x) - 1 for x in objects]
     scheduler = cnt.copy()
     for idx, classname in enumerate(scheduler.keys()):
         scheduler[classname] = rates[idx]
