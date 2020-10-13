@@ -11,6 +11,7 @@ import os.path as osp
 from tqdm import tqdm
 import matplotlib.pyplot as plt
 import imgaug.augmenters as iaa
+from shapely.geometry import Polygon
 
 ##
 def makedir(path):
@@ -22,6 +23,7 @@ def makedir(path):
 # CLASSES是类别名
 def category_statistics(labels, CLASSES=None):
     res_cnt = {}
+    box_areas = []
     for classname in CLASSES:
         res_cnt[classname] = 0
     pbar = tqdm(labels)
@@ -30,22 +32,30 @@ def category_statistics(labels, CLASSES=None):
         with open(label, 'r') as f:
             objs = f.readlines()
             for obj in objs:
-                classname, *_ = obj.strip().split()
+                classname, *bbox = obj.strip().split()
+                box_areas.append(bbox_area(bbox))
                 assert classname in CLASSES, 'wrong classname in '.format(filename)
-                if classname=='1':
-                    print(label)
                 res_cnt[classname] += 1
-    return res_cnt
+    return res_cnt, box_areas
+
 
 def augment_ratio(cnt):
     objects = [x for x in  cnt.values()]
-#    rates = [int(max(objects) / x) for x in objects]
     rates = [int(max(objects) / x) - 1 for x in objects]
+    rates[0] = int(rates[0]/10)  # [117, 857, 756, 904, 574]
     scheduler = cnt.copy()
     for idx, classname in enumerate(scheduler.keys()):
         scheduler[classname] = rates[idx]
     print(scheduler)
     return scheduler
+
+
+def bbox_area(bbox):
+    bbox = np.asarray(bbox)
+    bbox = np.array(bbox).reshape(4, 2)
+    poly = Polygon(bbox).convex_hull
+    return poly.area
+
 
 ## bbox trans 
 def quad_2_rbox(quads, mode='xyxya'):
@@ -136,8 +146,6 @@ class RA4(object):
     def save_ims(self, im, filename):
         dist_im = osp.join(self.dist_im_dir, filename + '.tif')
         cv2.imwrite(dist_im, im)
-
-
 
 
 
@@ -240,17 +248,18 @@ class HorizontalFlip(object):
         self.p = p
 
     def __call__(self, img, labels, mode=None):
+        aug_labels = labels.copy()
         if random.random() < self.p:
             img = np.fliplr(img)
             if mode == 'cxywha':    
-                labels[:, 1] = img.shape[1] - labels[:, 1]
-                labels[:, 5] = -labels[:, 5]
+                aug_labels[:, 1] = img.shape[1] - labels[:, 1]
+                aug_labels[:, 5] = -labels[:, 5]
             if mode == 'xyxyxyxy':
-                labels[:, [0,2,4,6]] = img.shape[1] - labels[:, [0,2,4,6]]
+                aug_labels[:, [0,2,4,6]] = img.shape[1] - labels[:, [0,2,4,6]]
             if mode == 'xywha':
-                labels[:, 0] = img.shape[1] - labels[:, 0]
-                labels[:, -1] = -labels[:, -1]                
-        return img, labels        
+                aug_labels[:, 0] = img.shape[1] - labels[:, 0]
+                aug_labels[:, -1] = -labels[:, -1]                
+        return img, aug_labels        
 
 
 class VerticalFlip(object):
@@ -258,17 +267,18 @@ class VerticalFlip(object):
         self.p = p
 
     def __call__(self, img, labels, mode=None):
+        aug_labels = labels.copy()
         if random.random() < self.p:
             img = np.flipud(img)
             if mode == 'cxywha': 
-                labels[:, 2] = img.shape[0] - labels[:, 2]
-                labels[:, 5] = -labels[:, 5]
+                aug_labels[:, 2] = img.shape[0] - labels[:, 2]
+                aug_labels[:, 5] = -labels[:, 5]
             if mode == 'xyxyxyxy':
-                labels[:, [1,3,5,7]] = img.shape[0] - labels[:, [1,3,5,7]]
+                aug_labels[:, [1,3,5,7]] = img.shape[0] - labels[:, [1,3,5,7]]
             if mode == 'xywha':
-                labels[:, 1] = img.shape[0] - labels[:, 1]
-                labels[:, -1] = -labels[:, -1]   
-        return img, labels 
+                aug_labels[:, 1] = img.shape[0] - labels[:, 1]
+                aug_labels[:, -1] = -labels[:, -1]   
+        return img, aug_labels 
 
 
 
@@ -351,22 +361,24 @@ def random_affine(img,  targets=(), degree=10, translate=.1, scale=.1, shear=10)
     t = targets.copy()
     targets[:, [0,2,4,6]] = t[:, [0,2,4,6]] * M[0,0] + t[:, [1,3,5,7]] * M[0,1] + M[0,2]
     targets[:, [1,3,5,7]] = t[:, [0,2,4,6]] * M[1,0] + t[:, [1,3,5,7]] * M[1,1] + M[1,2]
-    for x in range(0,8,2):
-        targets[:,x] = targets[:,x].clip(0, width)
-    for y in range(1,8,2):
-        targets[:,y] = targets[:,y].clip(0, height)
+  
     return imw, targets
 
 
 
 if __name__ == "__main__":
     
-    # root_path = '/data-input/RotationDet/data/RAChallenge/stage1/train'
-    root_path = '/data-input/RotationDet/data/RAChallenge/warmup'
+    root_path = 'D:\Datasets\RAChallenge\Task4\warmup'
+    # root_path = 'warmup_augment'
+    # root_path = '/data-input/RotationDet/data/RAChallenge/warmup'
     dataset = RA4(root_path)
     
     # augment schedule
-    res_cnt = category_statistics(dataset.anno_files, dataset.CLASSES)
+    res_cnt, box_areas = category_statistics(dataset.anno_files, dataset.CLASSES)
+
+    # area
+    min_bbox_area = min(box_areas)
+
     scheduler = augment_ratio(res_cnt)
     # augmentation
     pair = tqdm(zip(dataset.im_files, dataset.anno_files))
@@ -374,19 +386,33 @@ if __name__ == "__main__":
         pair.set_description("augmentation on{}".format(img_file))
         filename = osp.splitext(osp.split(img_file)[1])[0]
         img = cv2.imread(img_file,1)
-        classes, bboxes = dataset.parse_annos(anno_file)
-        cnt = max([scheduler[x] for x in np.unique(classes)]) 
-        iters = tqdm(range(cnt))
-        for iter in iters:
-            transform = Augment([   HSV(0.5, 0.5, p=0.1),
+        classes, _bboxes = dataset.parse_annos(anno_file)
+        cnt = max([scheduler[x] for x in np.unique(classes)])  # 该图像需要生成增强的图像数
+        flag = 0  # 已经生成的图像数
+        while flag != cnt:
+            transform = Augment([   HSV(0.5, 0.5, p=0.),
                                     HorizontalFlip(p=0.5),
                                     VerticalFlip(p=0.5),
-                                    Affine(degree=90, translate=0.2, scale=0.2, p=0.7),  
+                                    Affine(degree=90, translate=0.2, scale=(0.5, 2.0), p=1),
                                     # Noise(0.02, p=0.2),
                                     # Blur(1.3, p=0.5),
-                                    ],box_mode = 'xyxyxyxy')
-            im, bboxes = transform(img, bboxes)
-            name = filename + '_' + str(iter)
-            dataset.save_ims(im, name)
-            dataset.save_labels(classes, bboxes, name)
+                                    ], box_mode = 'xyxyxyxy')
+            im, bboxes = transform(img, _bboxes)
+            # validation judgement
+            area_flag = True
+            for box in bboxes:
+                if bbox_area(box) < min_bbox_area:
+                    area_flag = False 
 
+            cond = (bboxes > 0).all() & \
+                    (bboxes[:, [0, 2, 4, 6]] < im.shape[1]).all() & \
+                    (bboxes[:, [1, 3, 5, 7]] < im.shape[0]).all() & \
+                    area_flag
+
+            if not cond:
+                continue
+            else:
+                flag += 1
+                name = filename + '_' + str(flag)
+                dataset.save_ims(im, name)
+                dataset.save_labels(classes, bboxes, name)
