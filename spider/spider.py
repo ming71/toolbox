@@ -15,7 +15,7 @@ from tqdm import tqdm
 import sys
 import time
 
-def frequence_query(src_path):
+def frequence_BCC_query(src_path):
     # 文件夹输入，将多输入和检索结果丢在一起比较方便
     if os.path.isdir(src_path):     
         files = sorted(glob.glob(os.path.join(src_path, '*.*')))
@@ -40,6 +40,43 @@ def frequence_query(src_path):
                         req = requests.get(url) 
                         result=req.text[req.text.index('\t    共')+6:req.text.index('个结果')].strip(' ') # 搜索目标结果
                         print(word)
+                        # import ipdb; ipdb.set_trace()
+                        fw.write(result+'\n')
+
+    elif os.path.isfile(src_path):
+        print('将文件放到对应的文件夹下即可')
+    else:
+        print('路径不对，检查一下')
+
+
+def frequence_CCL_query(src_path):
+    # 文件夹输入，将多输入和检索结果丢在一起比较方便
+    if os.path.isdir(src_path):     
+        files = sorted(glob.glob(os.path.join(src_path, '*.*')))
+        for path in files:
+            file_name = os.path.split(path)[1]
+            save_path = os.path.join(src_path,os.path.splitext(file_name)[0]+'_result.txt')
+
+            if os.path.exists(save_path):
+                os.remove(save_path)
+                files.pop(files.index(save_path))
+
+            with open(path,'r', encoding='utf-8',errors='ignore') as f:
+            # with open(path,'r', encoding='gbk',errors='ignore') as f:
+                with open(save_path,'a') as fw:
+                    contents = f.readlines()
+                    words = [word.strip('\n').strip('') for word in contents]
+                    assert len(contents)==len(words), '有空行，检查一下是不是输入有问题'
+
+                    for word in tqdm(words):
+                        # import ipdb; ipdb.set_trace()
+                        url='http://ccl.pku.edu.cn:8080/ccl_corpus/search?q=' + \
+                            word + \
+                            '&start=0&num=50&index=FullIndex&outputFormat=HTML&encoding=UTF-8&maxLeftLength=30&maxRightLength=30&orderStyle=score&LastQuery=&dir=xiandai&scopestr='
+                        req = requests.get(url) 
+                        # import ipdb; ipdb.set_trace()
+                        result=req.text[req.text.index('>共有 ')+7:req.text.index('条结果')-5].strip(' ') # 搜索目标结果
+                        print(word + '  ' + result)
                         # import ipdb; ipdb.set_trace()
                         fw.write(result+'\n')
 
@@ -92,7 +129,7 @@ def strokes_query(src_path, merge=0, Online=True):
                             if word in uncommon_character.keys():
                                 result = str(uncommon_character[word])
                             else:
-                                print('生僻字未收录{}'.foramt(word))
+                                print('生僻字未收录:  ' + word)
                                 raise NotImplementedError                                   
                         print(word,result)
                         fw.write(result+'\n')
@@ -125,17 +162,17 @@ def strokes_query(src_path, merge=0, Online=True):
 
 
 
-# 网站或者数据库未收录字
-uncommon_character = {'尬':7, '矩':9}
+# 数据库未收录字
+uncommon_character = {'尬':7, '矩':9, '伙':6, '辑':13}
 
 
 
 if __name__ == "__main__":
-    src_path = 'D:\\application\Jupyter Notebook\spider\search'
-
-    # frequence_query(src_path)
+    src_path = r'D:\研究生\Git\toolbox\spider\search'
+    frequence_CCL_query(src_path)
+    # frequence_BCC_query(src_path)
     # strokes_query(src_path,merge=2)    
-    strokes_query(src_path, merge=0, Online=False)    
+    # strokes_query(src_path, merge=0, Online=False)    
 
 
 
