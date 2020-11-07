@@ -397,7 +397,7 @@ if __name__ == "__main__":
                                     # Noise(0.02, p=0.2),
                                     # Blur(1.3, p=0.5),
                                     ], box_mode = 'xyxyxyxy')
-            im, bboxes = transform(img, _bboxes)
+            im, bboxes = transform(img, _bboxes.copy())
             # validation judgement
             area_flag = True
             for box in bboxes:
