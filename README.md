@@ -7,7 +7,7 @@ Codes for label format conversion.</br>
 
   I have achieved the conversion to coco annotations including: `IC15`, `HRSC2016`, `UCAS-AOS`, `NWPU VHR 10`. and `VOC`. Besides, it also supports `labelme` annotations converted to COCO format.
 
-*  **toDOTA** 
+*  **toDOTA**  
 
   The codes in this part support the conversion of data annotations from `IC15`, `HRSC2016`, `UCAS-AOS`, `NWPU VHR 10` into polygonal form of `DOTA` annotations. And it also supports the preprocessing code of the corresponding datasets and the `.json` files generation codes.
 

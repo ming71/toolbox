@@ -124,8 +124,13 @@ def sort_corners(quads):
     return sorted
 
 
-pts = np.array([[296, 245] ,[351 ,266], [208, 487],[263, 507]])
-npts = order_points_quadrangle(pts)
+#pts = np.array([[296, 245] ,[351 ,266], [208, 487],[263, 507]])
+#npts = order_points_quadrangle(pts)
 
+pts = np.array([
+[242.7452, 314.5097, 242.7452, 133.4903, 333.2548, 133.4903, 333.2548,314.5097],
+[333.2548, 133.4903, 333.2548, 314.5097, 242.7452, 314.5097, 242.7452,133.4903]
+])
+npts = sort_corners(pts)
 print(pts)
 print(npts)
