@@ -36,7 +36,7 @@ def frequence_BCC_query(src_path):
 
                     for word in tqdm(words):
                         urlencode = quote(word)
-                        url='http://bcc.blcu.edu.cn/zh/search/2/' + urlencode
+                        url='http://bcc.blcu.edu.cn/zh/search/0/' + urlencode
                         req = requests.get(url) 
                         result=req.text[req.text.index('\t    共')+6:req.text.index('个结果')].strip(' ') # 搜索目标结果
                         print(word)
@@ -112,7 +112,7 @@ def strokes_query(src_path, merge=0, Online=True):
             # with open(path,'r', encoding='gbk',errors='ignore') as f:
                 with open(save_path,'a') as fw:
                     contents = f.read()
-                    words = contents.replace('\n','').strip('')
+                    words = contents.replace('\n','').strip('').replace(' ','')
                     for word in tqdm(words):
                         try:
                             if Online == True:
@@ -129,6 +129,7 @@ def strokes_query(src_path, merge=0, Online=True):
                             if word in uncommon_character.keys():
                                 result = str(uncommon_character[word])
                             else:
+                                import ipdb; ipdb.set_trace()
                                 print('生僻字未收录:  ' + word)
                                 raise NotImplementedError                                   
                         print(word,result)
@@ -168,11 +169,11 @@ uncommon_character = {'尬':7, '矩':9, '伙':6, '辑':13}
 
 
 if __name__ == "__main__":
-    src_path = r'D:\研究生\Git\toolbox\spider\search'
-    frequence_CCL_query(src_path)
+    src_path = r'/py/toolbox/spider/search'
+    # frequence_CCL_query(src_path)
     # frequence_BCC_query(src_path)
     # strokes_query(src_path,merge=2)    
-    # strokes_query(src_path, merge=0, Online=False)    
+    strokes_query(src_path, merge=2, Online=False)    
 
 
 
