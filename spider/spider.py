@@ -75,7 +75,10 @@ def frequence_CCL_query(src_path):
                             '&start=0&num=50&index=FullIndex&outputFormat=HTML&encoding=UTF-8&maxLeftLength=30&maxRightLength=30&orderStyle=score&LastQuery=&dir=xiandai&scopestr='
                         req = requests.get(url) 
                         # import ipdb; ipdb.set_trace()
-                        result=req.text[req.text.index('>共有 ')+7:req.text.index('条结果')-5].strip(' ') # 搜索目标结果
+                        if req.text.find('很抱歉，没有找到符合检索条件的实例') != -1:
+                            result = '0'
+                        else:
+                            result=req.text[req.text.index('>共有 ')+7:req.text.index('条结果')-5].strip(' ') # 搜索目标结果
                         print(word + '  ' + result)
                         # import ipdb; ipdb.set_trace()
                         fw.write(result+'\n')
@@ -170,10 +173,10 @@ uncommon_character = {'尬':7, '矩':9, '伙':6, '辑':13}
 
 if __name__ == "__main__":
     src_path = r'/py/toolbox/spider/search'
-    # frequence_CCL_query(src_path)
+    frequence_CCL_query(src_path)
     # frequence_BCC_query(src_path)
     # strokes_query(src_path,merge=2)    
-    strokes_query(src_path, merge=2, Online=False)    
+    # strokes_query(src_path, merge=2, Online=False)    
 
 
 
