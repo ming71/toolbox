@@ -71,6 +71,7 @@ def plot_contour_sub(mesh, func, loc=[0, 0], title="name", pngfile="./name"):
     # im = ax.contourf (*mesh, func, cmap="jet", levels =[0,0.1,0.2,0.8,  0.9, 0.95, 1.0 ] )
     im = ax.contourf (*mesh, func, cmap="jet" )
     ax.set_title(title)
+    # 右端的色彩条是否添加
     plt.colorbar(im, ax=ax, shrink=0.9)
     plt.savefig(pngfile + ".png")
 
@@ -149,8 +150,10 @@ def Reconst_Gaussian():
     print([sx, sy], s0xy, s1xy)
     print([rx, ry], w0xy, w1xy)
 
-    plot_contour_sub(mesh, fxy0, loc=s0xy, title="Original", pngfile="./fxy0")
-    plot_contour_sub(mesh, fxy1, loc=s1xy, title="Reconst" , pngfile="./fxy1")
+    plot_contour_sub(mesh, fxy0, loc=s0xy, title="Gaussian Distribution", pngfile="./fxy0")
+    # plot_contour_sub(mesh, fxy1, loc=s1xy, title="Reconst" , pngfile="./fxy1")
+    # 按照指定dpi存储
+    # plt.savefig('sample.png',dpi=600)
     plt.show()
 
 def Const_from_Rect():
@@ -184,5 +187,6 @@ def Const_from_Rect():
 
 
 if __name__ == "__main__":
-    Const_from_Rect()
+    Reconst_Gaussian()
+    # Const_from_Rect()
 
