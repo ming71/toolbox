@@ -5,7 +5,6 @@ import random
 import numpy as np
 import torch.nn.functional as F  
 import matplotlib.pyplot as plt  
-from riou_python import RIoU
 
 def setup_seed(seed):
 	torch.manual_seed(seed)					 # CPU

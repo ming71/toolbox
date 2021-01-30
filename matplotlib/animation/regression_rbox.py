@@ -5,7 +5,6 @@ import random
 import numpy as np
 import torch.nn.functional as F  
 import matplotlib.pyplot as plt  
-from riou_python import RIoU
 
 def setup_seed(seed):
 	torch.manual_seed(seed)					 # CPU
@@ -131,7 +130,7 @@ if __name__ == "__main__":
     model = Net(n_feature=5, n_hidden=10, n_output=5)  
     optimizer = torch.optim.Adam(model.parameters(), lr=0.05)  
     # func = 'mse'
-    # func = 'smoothl1'
+    func = 'smoothl1'
     loss_func = Loss(func=func)  
 
     # plot regression process
@@ -172,4 +171,3 @@ if __name__ == "__main__":
         plt.plot(range(total), total_loss, label = func)
     plt.legend(loc='best')
     plt.show()
-
