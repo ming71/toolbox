@@ -135,6 +135,21 @@ def get_DOTA_points(label_path, rotate=False):
 
 
 
+# for UCAS-AOD style（四点八坐标txt格式）
+def get_UCAS_points(label_path, rotate=False):
+    with open(label_path,'r') as f:        
+        contents=f.read()
+        lines=contents.split('\n')
+        object_coors=[]	# coor内一个元素是一个物体，含四个点8坐标
+        for object in lines:
+            if len(object) > 0:
+                coors = [eval(x) for x in object.split()]
+                x0 = coors[0]; y0 = coors[1]; x1 = coors[2]; y1 = coors[3]
+                x2 = coors[4]; y2 = coors[5]; x3 = coors[6]; y3 = coors[7]
+                object_coors.append(np.array([x0,y0,x1,y1,x2,y2,x3,y3]).reshape(4,2).astype(np.int32))
+    return object_coors  
+
+
 # for ICDAR style（四点八坐标txt格式）
 def get_ICDAR_points(label_path,rotate=False):
     with open(label_path,'r',encoding='UTF-8-sig') as f:        
@@ -221,9 +236,9 @@ if __name__ == "__main__":
     # save_path = '/py/datasets/ship/tiny_ships/yolo_ship/single_class/train_imgs'
     
     # 注意：如果是yolo，img和label放到一个文件夹下，并且路径设置也要一样
-    img_path = r'C:/Users/xiaoming/Desktop/5.jpg'
-    label_path = '/py/BoxesCascade/ICDAR15/train_label/gt_img_34.txt' #34
-    func = get_ICDAR_points
+    img_path = r'Desktop/P103.png'
+    label_path = 'Desktop/P103.txt' #34
+    func = get_UCAS_points
     
     
     # for folder
@@ -247,9 +262,9 @@ if __name__ == "__main__":
     
     # for single img
     elif os.path.isfile(img_path):
-        # object_coors = func(os.path.join(label_path),rotate=False)
+        object_coors = func(os.path.join(label_path),rotate=False)
         ## test coors:
-        object_coors = [np.array([[296, 245] ,[351 ,266],[263, 507], [208, 487]])]
+        # object_coors = [np.array([[296, 245] ,[351 ,266],[263, 507], [208, 487]])]
         if len(object_coors):
             drawbox(img_path,object_coors,False)
     else:
