@@ -94,6 +94,8 @@ def generate_txt_labels(src_dir, eval_dir):
         label_txt = osp.join(label_txt_path, 'gt_img_' + im_name + '.txt')
         convert_label(label, label_txt)
     gt_zip = os.path.join(eval_dir, 'gt.zip')
+    if os.path.exists(gt_zip):
+        os.remove(gt_zip)
     os.system('zip -j {} {}'.format(gt_zip, label_txt_path + '/*')) 
     shutil.rmtree(label_txt_path)
 
