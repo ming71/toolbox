@@ -48,6 +48,9 @@ def unzip_file(zipfilename, unziptodir):
 # 下面创建的是名为submission.zip的压缩文件，解压后一级目录test下是所有的label
 os.system('cd {} && zip -r -q  {} {} '.format(root_dir, 'submission.zip', 'test'))
 
+# update: -j 一步到位不带父目录
+os.system('cd {} && zip -j  {} {} '.format(root_dir, 'submission.zip', 'test'))
+
 
 
 if __name__ == '__main__':

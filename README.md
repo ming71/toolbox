@@ -18,6 +18,11 @@ Codes for label format conversion.</br>
 * **toYOLO**  
 
   This part will no longer be maintained and it supports both `xml` and `ICDAR` formats.
+  
+ * **MSRA-TD500**  
+  Support evaluation on MSRA-TD500 with IC15 scripts.
+
+  
 
 ## dataset  
 
