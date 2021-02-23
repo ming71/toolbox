@@ -151,7 +151,7 @@ def strokes_query(src_path, merge=0, Online=True):
                     elif merge == 3 :
                         res = [i + j + k for i, j, k in zip(strokes[::3] , strokes[1::3] , strokes[2::3])]
                     elif merge == 4 :
-                        res = [i + j + k+l for i, j, k,l in zip(strokes[::4], strokes[1::4] ,strokes[2::4] ,strokes[4::4])]
+                        res = [i + j + k+l for i, j, k,l in zip(strokes[::4], strokes[1::4] ,strokes[2::4] ,strokes[3::4])]
                     else:
                         print('写一下多个词的合并规则，很简单')
                         raise NotImplementedError       
@@ -172,11 +172,11 @@ uncommon_character = {'尬':7, '矩':9, '伙':6, '辑':13}
 
 
 if __name__ == "__main__":
-    src_path = r'/py/toolbox/spider/search'
-    frequence_CCL_query(src_path)
+    src_path = r'C:\Users\xiaoming\Desktop\spider\search'
+    # frequence_CCL_query(src_path)
     # frequence_BCC_query(src_path)
     # strokes_query(src_path,merge=2)    
-    # strokes_query(src_path, merge=2, Online=False)    
+    strokes_query(src_path, merge=4, Online=False)    
 
 
 
