@@ -15,6 +15,10 @@ Coordinate information of points is read from annotation files such as XML
 2. Save results or just display
 3. Related drawing properties
 
+## plot_augmentation
+
+check boxes after data augmentation.
+
 
 ## Result
 Applying the transformation of crop and affine on DOTA pictures, the transformation coordinates were mapped to get the following bbox results:
