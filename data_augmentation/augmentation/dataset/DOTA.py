@@ -27,6 +27,7 @@ class DOTA(object):
 
     def parse_annos(self, label):
         bboxes = []
+        diffs = []
         classnames = []
         with open(label, 'r') as f:
             lines = f.readlines()[2:]
@@ -34,6 +35,7 @@ class DOTA(object):
                 *bbox, cls, diff = line.strip().split()
                 classnames.append(cls)
                 bboxes.append([eval(x) for x in bbox])
+                diffs.append(diff)
         return classnames, np.array(bboxes)
     
     
@@ -43,9 +45,9 @@ class DOTA(object):
 
     def save_labels(self, classnames, bboxes, size, filename):
         dist_label = osp.join(self.dist_an_dir, filename + '.txt')
-        gt = ''
+        gt = 'imagesource:GoogleEarth \n gsd:0.0 \n'
         for cls, bbox in zip(classnames,bboxes.tolist()):
-            gt += cls + ' ' + ' '.join(str(i) for i in bbox) + '\n'
+            gt +=  ' '.join(str(i) for i in bbox) + ' ' + cls + ' ' +  '0' '\n'
         with open(dist_label, 'w') as f:
             f.write(gt)
 
