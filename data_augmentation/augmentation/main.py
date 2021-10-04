@@ -11,8 +11,8 @@ from ops import *
 
 if __name__ == "__main__":
     
-    data_dir = 'data'
-    dataset = FAIR1M(data_dir)
+    data_dir = 'train'
+    dataset = DOTA(data_dir)
 
     pair = tqdm(zip(dataset.im_files, dataset.anno_files))
     for img_file, anno_file in pair:
