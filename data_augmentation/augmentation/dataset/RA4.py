@@ -11,6 +11,8 @@ class RA4(object):
         self.anno_path = osp.join(root_path, 'labels')  
         self.im_files = glob.glob(osp.join(self.im_path,'*.tif'))
         self.anno_files = glob.glob(osp.join(self.anno_path,'*.txt'))
+        self.im_files.sort()
+        self.anno_files.sort()
         self.dist_root = root_path.replace(osp.split(self.root_path)[1], osp.split(self.root_path)[1] + '_augment')
         self.dist_im_dir = osp.join(self.dist_root, 'images')
         self.dist_an_dir = osp.join(self.dist_root, 'labels')
